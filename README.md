@@ -42,7 +42,7 @@ If you want to play around with the code you just need to:
 `docker-compose -f docker/services-docker-compose.yml up`
 
 # Testing the app
-If you want to test how the application behaves you just can send the next HTTP requests:
+If you want to test how the application behaves you can send the next HTTP requests:
 
 1) Create a Pull Request:
 
