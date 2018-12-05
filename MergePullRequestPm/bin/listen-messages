@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+
+<?php
+
+use Psr\Log\LoggerInterface;
+use Soa\MessageStore\Loop\Pcntl\PcntlLoopFactory;
+use Soa\MessageStore\Subscriber\Listener\MessageRouter;
+use Soa\MessageStore\Subscriber\MessageSubscriber;
+use Soa\MessageStore\Subscriber\SubscriberApplication;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+(function(){
+    /**
+     * Fill the container variable with one of your choice compatible with PSR-11.
+     * Define in your container the next services:
+     * @see MessageRouter
+     * @see MessageSubscriber
+     * @see LoggerInterface
+     */
+    /** @var \Psr\Container\ContainerInterface $container */
+    $container = require __DIR__ . '/../src/Infrastructure/Di/ZendServiceManager/container.php';
+
+    $app = new SubscriberApplication($container->get(MessageRouter::class), $container->get(MessageSubscriber::class), new PcntlLoopFactory());
+
+    (require __DIR__ . '/../src/Infrastructure/Ui/Messaging/routes.php')($app, $container);
+
+    try {
+        $app->startConsuming();
+    } catch (\Throwable $exception) {
+        /** @var LoggerInterface $logger */
+        $logger = $container->get(LoggerInterface::class);
+        $logger->error(
+            $exception->getMessage(),
+            [
+                'exception' => $exception,
+                'message'   => $exception->getMessage(),
+            ]
+        );
+    }
+})();

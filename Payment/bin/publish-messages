@@ -1,0 +1,39 @@
+#!/usr/bin/env php
+
+<?php
+
+use Psr\Log\LoggerInterface;
+use Soa\MessageStore\Loop\Pcntl\PcntlLoopFactory;
+use Soa\MessageStore\Publisher\MessageDeliveryService;
+use Soa\MessageStore\Publisher\MessagePublisher;
+use Soa\MessageStore\Publisher\PublisherApplication;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+(function(){
+    /**
+     * Fill the container variable with one of your choice compatible with PSR-11.
+     * Define in your container the next services:
+     * @see MessagePublisher
+     * @see MessageDeliveryService
+     * @see \Psr\Log\LoggerInterface
+     */
+    /** @var \Psr\Container\ContainerInterface $container */
+    $container = require __DIR__ . '/../src/Infrastructure/Di/ZendServiceManager/container.php';
+
+    $logger = $container->get(LoggerInterface::class);
+    $app = new PublisherApplication($container->get(MessagePublisher::class),$container->get(MessageDeliveryService::class),$logger, new PcntlLoopFactory());
+
+    try {
+        $app->startPublishing();
+    } catch (\Throwable $exception) {
+        /** @var LoggerInterface $logger */
+        $logger->error(
+            $exception->getMessage(),
+            [
+                'exception' => $exception,
+                'message'   => $exception->getMessage(),
+            ]
+        );
+    }
+})();

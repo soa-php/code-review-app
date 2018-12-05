@@ -1,0 +1,24 @@
+version: '3'
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - common
+
+  rabbitmq:
+    image: rabbitmq:3.6-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=devuser
+      - RABBITMQ_DEFAULT_PASS=devpass
+      - RABBITMQ_DEFAULT_VHOST=devhost
+    networks:
+      - common
+
+networks:
+  common:
+    external: true
