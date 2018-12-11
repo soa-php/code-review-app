@@ -47,10 +47,10 @@ If you want to test how the application behaves you can send the next HTTP reque
 1) Create a Pull Request:
 
 `
-curl -i -X POST \
-   -H "id:e0ff1d6d-9035-4974-b711-b9805116abad" \
-   -d \
-'{"writer":"aaaa", "code":"some code"}' \
+curl -i -X POST 
+   -H "id:e0ff1d6d-9035-4974-b711-b9805116abad"
+   -d 
+'{"writer":"aaaa", "code":"some code"}' 
  'http://localhost:8080/pull-requests'
 `
 
@@ -59,59 +59,59 @@ NOTE: Copy the UUID generated from the `Location` header returned in the Respons
 2) Assign a Reviewer:
 
 `
-curl -i -X PUT \
-   -H "Content-Type:application/json" \
-   -H "id:eb59b73b-a0d7-4cc8-9d9e-118b11a5f30c" \
-   -d \
+curl -i -X PUT 
+   -H "Content-Type:application/json" 
+   -H "id:eb59b73b-a0d7-4cc8-9d9e-118b11a5f30c" 
+   -d 
 '{
 	"reviewer": "a reviewer"
-}' \
+}' 
  'http://localhost:8080/pull-requests/{id}/reviewer'
  `
  
 3) Assign another Reviewer:
 
 `
-curl -i -X PUT \
-   -H "Content-Type:application/json" \
-   -H "id:07d6a393-eb2a-4d00-8351-0e691865fe82" \
-   -d \
+curl -i -X PUT 
+   -H "Content-Type:application/json" 
+   -H "id:07d6a393-eb2a-4d00-8351-0e691865fe82" 
+   -d 
 '{
 	"reviewer": "another reviewer"
-}' \
+}' 
  'http://localhost:8080/pull-requests/{id}/reviewer'
 ` 
 
 4) Approve the Pull Request by one Reviewer:
 
 `
-curl -i -X PUT \
-   -H "Content-Type:application/json" \
-   -H "id:cc8ea97a-8c90-4023-aeb2-f4387c79bee9" \
-   -d \
+curl -i -X PUT 
+   -H "Content-Type:application/json" 
+   -H "id:cc8ea97a-8c90-4023-aeb2-f4387c79bee9" 
+   -d 
 '{
 	"approver": "a reviewer"
-}' \
+}' 
  'http://localhost:8080/pull-requests/{id}/approve'
 `
 
 5) Approve the Pull Request by the other Reviwer:
 
 `
-curl -i -X PUT \
-   -H "Content-Type:application/json" \
-   -H "id:78ffb2f0-7598-4c9d-abd0-0f06bad29cc2" \
-   -d \
+curl -i -X PUT 
+   -H "Content-Type:application/json" 
+   -H "id:78ffb2f0-7598-4c9d-abd0-0f06bad29cc2" 
+   -d 
 '{
 	"approver": "another reviewer"
-}' \
+}' 
  'http://localhost:8080/pull-requests/{id}/approve'
 `
 
 6) At this point, since all reviewers have approved the Pull Request, the Process Manager starts managing the process to charge and pay the money, and then merge the Pull Request.
 
 # Checking the result
-You can check the data created by connecting to the Mongo database which is listening at `localhost:27017` without user nor password required. You can also check the queues and exchanges created in RabbitMQ by opening in your browser the URL `http://localhost:15672/#/`
+You can check the data created by connecting to the Mongo database which is listening at `localhost:27017` without user nor password required. You can also check the queues and exchanges created in RabbitMQ by opening in your browser the URL `http://localhost:15672/#/`. You can login into local RabbitMQ Manager using the user "devuser" with the password "devpass".
 
 # Running Unit Tests
 Each Bounded Context has a `run.sh` script, if you want to run the unit tests you just need to go to the Bounded Context folder and execute:
