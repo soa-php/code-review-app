@@ -3,7 +3,7 @@
 COMMAND=${1:-}
 shift
 
-run_in_docker="docker run -it --rm -v $PWD/..:/srv/app -w /srv/app/MergePullRequestPm --user ${UID} php_base:1.0"
+run_in_docker="docker run -it --rm -v $PWD/..:/srv/app -w /srv/app/MergePullRequestPm --user ${UID} mgonzalezbaile/php_base:1.0"
 
 case "$COMMAND" in
     composer)

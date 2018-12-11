@@ -8,3 +8,5 @@ cd ../Payment/
 
 cd ../PullRequest
 ./run.sh composer install
+
+docker network inspect common &>/dev/null || docker network create common
