@@ -9,4 +9,4 @@ cd ../Payment/
 cd ../PullRequest
 ./run.sh composer install
 
-docker create network common
+docker network create common
