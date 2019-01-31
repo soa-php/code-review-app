@@ -76,6 +76,26 @@ services:
 #    networks:
 #    - common
 
+  user_identity_message_publisher:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+    - ..:/srv/app
+    working_dir: /srv/app/UserIdentity
+    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
+    networks:
+    - common
+
+  user_identity_server:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+    - ..:/srv/app
+    working_dir: /srv/app/UserIdentity
+    ports:
+    - "8081:8080"
+    command: 'php -S 0.0.0.0:8080 /srv/app/UserIdentity/src/Infrastructure/Ui/Http/index.php'
+    networks:
+    - common
+
 networks:
   common:
     external: true
