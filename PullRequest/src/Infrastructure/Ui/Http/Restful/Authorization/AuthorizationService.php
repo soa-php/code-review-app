@@ -6,13 +6,23 @@ namespace PullRequest\Infrastructure\Ui\Http\Restful\Authorization;
 
 class AuthorizationService
 {
+    /**
+     * @var array
+     */
+    private $authorizationRules;
+
+    public function __construct(array $authorizationRules)
+    {
+        $this->authorizationRules = $authorizationRules;
+    }
+
     public function isAuthRequiredForRoute(string $route, string $method): bool
     {
-        if (!isset(AuthorizationRules::getRules()[$route])) {
+        if (!isset($this->authorizationRules[$route])) {
             return false;
         }
 
-        if (!isset(AuthorizationRules::getRules()[$route][$method])) {
+        if (!isset($this->authorizationRules[$route][$method])) {
             return false;
         }
 
@@ -32,7 +42,7 @@ class AuthorizationService
                     return true;
                 }
 
-                return in_array($userRole, AuthorizationRules::getRules()[$route][$method]);
+                return in_array($userRole, $this->authorizationRules[$route][$method]);
             },
             false
         );
