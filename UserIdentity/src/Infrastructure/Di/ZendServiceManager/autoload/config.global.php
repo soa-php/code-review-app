@@ -5,7 +5,9 @@ declare(strict_types=1);
 use UserIdentity\Application\Projection\UserProjector;
 use UserIdentity\Domain\PasswordEncryption;
 use UserIdentity\Domain\TokenFactory;
+use UserIdentity\Domain\TokenValidator;
 use UserIdentity\Domain\UseCase\LogUserInWithPasswordCommandHandler;
+use UserIdentity\Domain\UseCase\RefreshUserAccessTokenCommandHandler;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\UserRepository;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\DatabaseIdentifierGenerator;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\UserProjectionTable;
@@ -13,7 +15,9 @@ use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\AbstractMessageLis
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessageSubscriberFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\JwtTokenBuilderFactory;
+use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\JwtTokenValidatorFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\MessageRouterFactory;
+use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\RefreshUserAccessTokenCommandHandlerFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\UserProjectionTableMongoDbFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\UserRepositoryMongoDbFactory;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\RestFullMiddlewareAbstractFactory;
@@ -51,22 +55,24 @@ return [
         'aliases' => [
         ],
         'factories'  => [
-            Client::class                                 => ClientMongoDbFactory::class,
-            Database::class                               => DatabaseMongoFactory::class,
-            PublishedMessageTracker::class                => PublishedMessageTrackerMongoDbFactory::class,
-            MessageDeliveryService::class                 => MessageDeliveryServiceFactory::class,
-            MessagePublisher::class                       => AmqpMessagePublisherFactory::class,
-            IncomingMessageStore::class                   => IncomingMessageStoreMongoDbFactory::class,
-            OutgoingMessageStore::class                   => OutgoingMessageStoreMongoDbFactory::class,
-            LoggerInterface::class                        => LoggerInterfaceStdoutFactory::class,
-            DatabaseIdentifierGenerator::class            => IdentifierGeneratorAutoIncrementFactory::class,
-            UserProjectionTable::class                    => UserProjectionTableMongoDbFactory::class,
-            UserRepository::class                         => UserRepositoryMongoDbFactory::class,
-            MessageRouter::class                          => MessageRouterFactory::class,
-            MessageSubscriber::class                      => AmqpMessageSubscriberFactory::class,
-            ErrorMessageTimeoutTracker::class             => ErrorMessageTimeoutTrackerMongoDbFactory::class,
-            TokenFactory::class                           => JwtTokenBuilderFactory::class,
-            LogUserInWithPasswordCommandHandler::class    => RegisterUserWithPasswordCommandHandlerFactory::class,
+            Client::class                               => ClientMongoDbFactory::class,
+            Database::class                             => DatabaseMongoFactory::class,
+            PublishedMessageTracker::class              => PublishedMessageTrackerMongoDbFactory::class,
+            MessageDeliveryService::class               => MessageDeliveryServiceFactory::class,
+            MessagePublisher::class                     => AmqpMessagePublisherFactory::class,
+            IncomingMessageStore::class                 => IncomingMessageStoreMongoDbFactory::class,
+            OutgoingMessageStore::class                 => OutgoingMessageStoreMongoDbFactory::class,
+            LoggerInterface::class                      => LoggerInterfaceStdoutFactory::class,
+            DatabaseIdentifierGenerator::class          => IdentifierGeneratorAutoIncrementFactory::class,
+            UserProjectionTable::class                  => UserProjectionTableMongoDbFactory::class,
+            UserRepository::class                       => UserRepositoryMongoDbFactory::class,
+            MessageRouter::class                        => MessageRouterFactory::class,
+            MessageSubscriber::class                    => AmqpMessageSubscriberFactory::class,
+            ErrorMessageTimeoutTracker::class           => ErrorMessageTimeoutTrackerMongoDbFactory::class,
+            TokenFactory::class                         => JwtTokenBuilderFactory::class,
+            TokenValidator::class                       => JwtTokenValidatorFactory::class,
+            LogUserInWithPasswordCommandHandler::class  => RegisterUserWithPasswordCommandHandlerFactory::class,
+            RefreshUserAccessTokenCommandHandler::class => RefreshUserAccessTokenCommandHandlerFactory::class,
         ],
         'invokables' => [
             Clock::class              => ClockImpl::class,

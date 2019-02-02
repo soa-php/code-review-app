@@ -6,7 +6,7 @@ namespace UserIdentity\Infrastructure\Di\ZendServiceManager\Factory;
 
 use MongoDB\Database;
 use Psr\Container\ContainerInterface;
-use UserIdentity\Domain\PullRequest;
+use UserIdentity\Domain\User;
 use UserIdentity\Infrastructure\Persistence\MongoDb\RepositoryMongoDb;
 use Soa\EventSourcing\Repository\Repository;
 
@@ -16,8 +16,8 @@ class UserRepositoryMongoDbFactory
     {
         /** @var Database $database */
         $database   = $container->get(Database::class);
-        $collection = $database->selectCollection('pull_requests');
+        $collection = $database->selectCollection('users');
 
-        return new RepositoryMongoDb($collection, PullRequest::class);
+        return new RepositoryMongoDb($collection, User::class);
     }
 }

@@ -8,8 +8,4 @@ use Soa\EventSourcing\Command\ConventionBasedCommand;
 
 class RefreshUserAccessTokenCommand extends ConventionBasedCommand
 {
-    public function __construct(string $userId)
-    {
-        $this->aggregateRootId = $userId;
-    }
 }

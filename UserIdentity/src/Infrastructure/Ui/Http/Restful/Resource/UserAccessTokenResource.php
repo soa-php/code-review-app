@@ -6,7 +6,6 @@ namespace UserIdentity\Infrastructure\Ui\Http\Restful\Resource;
 
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
-use function Martinezdelariva\Hydrator\hydrate;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Soa\EventSourcing\Command\CommandResponse;
@@ -16,11 +15,11 @@ use UserIdentity\Domain\Event\UserAccessTokenRefreshed;
 use UserIdentity\Domain\UseCase\RefreshUserAccessTokenCommand;
 use Zend\Diactoros\Response\JsonResponse;
 
-class UserRefreshTokenResource extends AbstractRestfulResourceMiddleware
+class UserAccessTokenResource extends AbstractRestfulResourceMiddleware
 {
-    public function post(ServerRequestInterface $request): ResponseInterface
+    public function put(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->buildCommand($request->getBody()->getContents())->withAggregateRootId($this->identifierGenerator->nextIdentity());
+        $command = $this->buildCommand($request->getBody()->getContents())->withAggregateRootId($request->getAttribute('id'));
 
         $result = $this->commandBus(UserIdentityCommandBus::class)->handle($command);
 
@@ -29,7 +28,7 @@ class UserRefreshTokenResource extends AbstractRestfulResourceMiddleware
 
     private function buildCommand(string $body): RefreshUserAccessTokenCommand
     {
-        return hydrate(RefreshUserAccessTokenCommand::class, json_decode($body, true));
+        return new RefreshUserAccessTokenCommand();
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface

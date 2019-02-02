@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Psr\Container\ContainerInterface;
-use UserIdentity\Infrastructure\Ui\Http\Restful\Resource\UserRefreshTokenResource;
+use UserIdentity\Infrastructure\Ui\Http\Restful\Resource\UserAccessTokenResource;
 use UserIdentity\Infrastructure\Ui\Http\Restful\Resource\UserWithPasswordCollectionResource;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
@@ -42,9 +42,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     );
 
     $app->put(
-        'users/{id}/refresh-token',
-        UserRefreshTokenResource::class,
-        UserRefreshTokenResource::class
+        '/users/{id}/access-token',
+        UserAccessTokenResource::class,
+        UserAccessTokenResource::class
     );
 
 //    $app->post(
