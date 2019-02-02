@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use PullRequest\Application\PullRequestCommandBus;
 use PullRequest\Domain\Event\PullRequestCreationFailed;
 use PullRequest\Domain\UseCase\CreatePullRequestCommand;
@@ -13,7 +14,6 @@ use function Martinezdelariva\Hydrator\hydrate;
 use const Martinezdelariva\Functional\_;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Soa\EventSourcing\Command\CommandResponse;
 use Soa\EventSourcing\Event\DomainEvent;
 use Soa\EventSourcing\Repository\AggregateRootNotFound;

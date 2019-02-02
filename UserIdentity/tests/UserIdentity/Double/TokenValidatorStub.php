@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UserIdentityTest\UserIdentity\Double;
 
-use UserIdentity\Domain\TokenValidator;
+use Common\Ui\Http\Restful\Authorization\TokenValidator;
 
 class TokenValidatorStub implements TokenValidator
 {

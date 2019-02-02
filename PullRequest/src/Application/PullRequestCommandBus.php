@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PullRequest\Application;
 
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
 use PullRequest\Application\Projection\PullRequestProjector;
 use Psr\Container\ContainerInterface;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestProjectionTable;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestRepository;
 use Soa\Clock\ClockImpl;
@@ -42,7 +42,7 @@ class PullRequestCommandBus implements CommandBus
 
     public function handle(Command $command): CommandResponse
     {
-        $boundedContextName = $this->container->get('config')['bounded-context'];
+        $boundedContextName = $this->container->get('config')['service-name'];
 
         $pipeline = MiddlewarePipelineFactory::create(
             new PersistProjectionMiddleware($this->container->get(PullRequestProjectionTable::class)),

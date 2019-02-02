@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace UserIdentity\Infrastructure\Di\ZendServiceManager\Factory\UseCase;
 
+use Common\Ui\Http\Restful\Authorization\TokenFactory;
 use Psr\Container\ContainerInterface;
 use UserIdentity\Domain\PasswordEncryption;
-use UserIdentity\Domain\TokenFactory;
 use UserIdentity\Domain\UseCase\LogUserInWithPasswordCommandHandler;
 use UserIdentity\Domain\UserWithPasswordContentValidator;
 

@@ -34,7 +34,7 @@ class RefreshUserAccessTokenCommandHandlerTest extends CommandHandlerTestCase
 
         $this->scenario
             ->given($aUserWithValidRefreshToken)
-            ->when(new RefreshUserAccessTokenCommand($aUserWithValidRefreshToken->id()))
+            ->when((new RefreshUserAccessTokenCommand())->withAggregateRootId($aUserWithValidRefreshToken->id()))
             ->then(new UserAccessTokenRefreshed($aUserWithValidRefreshToken->id(), $newAccessToken))
             ->andProjection(
                 [
@@ -61,7 +61,7 @@ class RefreshUserAccessTokenCommandHandlerTest extends CommandHandlerTestCase
 
         $this->scenario
             ->given($aUserWithInvalidRefreshToken)
-            ->when(new RefreshUserAccessTokenCommand($aUserWithInvalidRefreshToken->id()))
+            ->when((new RefreshUserAccessTokenCommand())->withAggregateRootId($aUserWithInvalidRefreshToken->id()))
             ->then(RefreshUserAccessTokenFailed::becauseGivenRefreshTokenIsInvalid($aUserWithInvalidRefreshToken->id(), $invalidRefreshToken));
     }
 }

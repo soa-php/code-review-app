@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UserIdentity\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
 use function Martinezdelariva\Hydrator\hydrate;

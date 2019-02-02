@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace UserIdentity\Infrastructure\Di\ZendServiceManager\Factory;
 
+use Common\Ui\Http\Restful\Authorization\JwtToken\JwtTokenValidator;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Psr\Container\ContainerInterface;
-use UserIdentity\Infrastructure\Domain\JwtTokenValidator;
 
 class JwtTokenValidatorFactory
 {

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace UserIdentity\Domain\UseCase;
 
+use Common\Ui\Http\Restful\Authorization\TokenFactory;
+use Common\Ui\Http\Restful\Authorization\TokenValidator;
 use Soa\EventSourcing\Command\Command;
 use Soa\EventSourcing\Command\CommandHandler;
 use Soa\EventSourcing\Event\EventStream;
 use Soa\EventSourcing\Repository\AggregateRoot;
 use UserIdentity\Domain\Event\UserAccessTokenRefreshed;
 use UserIdentity\Domain\Event\RefreshUserAccessTokenFailed;
-use UserIdentity\Domain\TokenFactory;
-use UserIdentity\Domain\TokenValidator;
 use UserIdentity\Domain\User;
 
 class RefreshUserAccessTokenCommandHandler implements CommandHandler

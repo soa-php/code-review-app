@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Messaging\Listener;
 
+use Common\Ui\Messaging\Listener\AbstractMessageListener;
 use function Martinezdelariva\Functional\match;
 use function Martinezdelariva\Hydrator\hydrate;
 use PullRequest\Application\PullRequestCommandBus;

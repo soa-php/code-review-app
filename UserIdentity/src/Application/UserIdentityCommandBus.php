@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace UserIdentity\Application;
 
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
 use UserIdentity\Application\Projection\UserProjector;
 use Psr\Container\ContainerInterface;
-use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
-use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\UserProjectionTable;
 use UserIdentity\Infrastructure\Di\ZendServiceManager\Alias\UserRepository;
 use Soa\Clock\ClockImpl;
@@ -42,7 +42,7 @@ class UserIdentityCommandBus implements CommandBus
 
     public function handle(Command $command): CommandResponse
     {
-        $boundedContextName = $this->container->get('config')['bounded-context'];
+        $boundedContextName = $this->container->get('config')['service-name'];
 
         $pipeline = MiddlewarePipelineFactory::create(
             new PersistProjectionMiddleware($this->container->get(UserProjectionTable::class)),

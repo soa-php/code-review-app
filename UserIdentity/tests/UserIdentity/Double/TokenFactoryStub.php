@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UserIdentityTest\UserIdentity\Double;
 
-use UserIdentity\Domain\TokenFactory;
+use Common\Ui\Http\Restful\Authorization\TokenFactory;
 
 class TokenFactoryStub implements TokenFactory
 {

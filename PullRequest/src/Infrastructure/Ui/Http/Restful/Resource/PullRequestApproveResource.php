@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
 use function Martinezdelariva\Hydrator\hydrate;
@@ -13,7 +14,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use PullRequest\Application\PullRequestCommandBus;
 use PullRequest\Domain\Event\ApprovePullRequestFailed;
 use PullRequest\Domain\UseCase\ApprovePullRequestCommand;
-use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Soa\EventSourcing\Command\CommandResponse;
 use Soa\EventSourcing\Event\DomainEvent;
 use Zend\Diactoros\Response\EmptyResponse;

@@ -2,39 +2,42 @@
 
 declare(strict_types=1);
 
+use Common\Di\Alias\DatabaseIdentifierGenerator;
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
+use Common\Di\Factory\AbstractMessageListenerFactory;
+use Common\Di\Factory\AmqpMessagePublisherFactory;
+use Common\Di\Factory\AmqpMessageSubscriberFactory;
+use Common\Di\Factory\AuthorizationMiddlewareFactory;
+use Common\Di\Factory\ClientMongoDbFactory;
+use Common\Di\Factory\DatabaseMongoFactory;
+use Common\Di\Factory\ErrorHandlerMiddlewareFactory;
+use Common\Di\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
+use Common\Di\Factory\IdentifierGeneratorAutoIncrementFactory;
+use Common\Di\Factory\IncomingMessageStoreMongoDbFactory;
+use Common\Di\Factory\LoggerInterfaceStdoutFactory;
+use Common\Di\Factory\MessageDeliveryServiceFactory;
+use Common\Di\Factory\MessageRouterFactory;
+use Common\Di\Factory\OutgoingMessageStoreMongoDbFactory;
+use Common\Di\Factory\PublishedMessageTrackerMongoDbFactory;
+use Common\Di\Factory\RestFullMiddlewareAbstractFactory;
+use Common\Ui\Http\Restful\Authorization\JwtToken\JwtTokenParser;
+use Common\Ui\Http\Restful\Authorization\TokenParser;
+use Common\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
+use Common\Ui\Http\Restful\Middleware\ErrorHandlerMiddleware;
 use PullRequest\Application\Projection\PullRequestProjector;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestRepository;
 use PullRequest\Domain\UseCase\ApprovePullRequestCommandHandler;
 use PullRequest\Domain\UseCase\AssignPullRequestReviewerCommandHandler;
 use PullRequest\Domain\UseCase\CreatePullRequestCommandHandler;
 use PullRequest\Domain\UseCase\MergePullRequestCommandHandler;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\DatabaseIdentifierGenerator;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestProjectionTable;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AbstractMessageListenerFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessageSubscriberFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AuthorizationMiddlewareFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\MessageRouterFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PullRequestProjectionTableMongoDbFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PullRequestRepositoryMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\RestFullMiddlewareAbstractFactory;
 use MongoDB\Client;
 use MongoDB\Database;
 use Psr\Log\LoggerInterface;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessagePublisherFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\ClientMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\DatabaseMongoFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\IdentifierGeneratorAutoIncrementFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\IncomingMessageStoreMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\LoggerInterfaceStdoutFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\MessageDeliveryServiceFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\OutgoingMessageStoreMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PublishedMessageTrackerMongoDbFactory;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
-use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
-use PullRequest\Infrastructure\Ui\Http\Restful\Authorization\AuthorizationRules;
-use PullRequest\Infrastructure\Ui\Http\Restful\Authorization\TokenParser;
-use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
+use PullRequest\Infrastructure\Ui\Http\Restful\AuthorizationRules;
 use Soa\Clock\Clock;
 use Soa\Clock\ClockImpl;
 use Soa\MessageStore\Publisher\MessageDeliveryService;
@@ -67,6 +70,7 @@ return [
             MessageSubscriber::class            => AmqpMessageSubscriberFactory::class,
             ErrorMessageTimeoutTracker::class   => ErrorMessageTimeoutTrackerMongoDbFactory::class,
             AuthorizationMiddleware::class      => AuthorizationMiddlewareFactory::class,
+            ErrorHandlerMiddleware::class       => ErrorHandlerMiddlewareFactory::class,
         ],
         'invokables' => [
             Clock::class                                   => ClockImpl::class,
@@ -75,7 +79,7 @@ return [
             AssignPullRequestReviewerCommandHandler::class => AssignPullRequestReviewerCommandHandler::class,
             MergePullRequestCommandHandler::class          => MergePullRequestCommandHandler::class,
             PullRequestProjector::class                    => PullRequestProjector::class,
-            TokenParser::class                             => TokenParser\JwtTokenParser::class,
+            TokenParser::class                             => JwtTokenParser::class,
         ],
         'abstract_factories' => [
             RestFullMiddlewareAbstractFactory::class,
@@ -84,8 +88,11 @@ return [
         ],
     ],
     'authorization-rules' => AuthorizationRules::getRules(),
-    'bounded-context' => 'pull_request',
-    'mongo-db'        => 'mongodb://mongo:27017',
+    'service-name'        => 'pull_request',
+    'mongo-db'            => [
+        'connection' => 'mongodb://mongo:27017',
+        'database'   => 'pull_request',
+    ],
     'rabbitmq'        => [
         'credentials' => [
             'host'     => 'rabbitmq',
@@ -93,6 +100,7 @@ return [
             'login'    => 'devuser',
             'password' => 'devpass',
         ],
+        'dead-letter-seconds' => 5,
     ],
     // Toggle the configuration cache. Set this to boolean false, or remove the
     // directive, to disable configuration caching. Toggling development mode

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UserIdentity\Domain\UseCase;
 
+use Common\Ui\Http\Restful\Authorization\TokenFactory;
 use Soa\EventSourcing\Command\Command;
 use Soa\EventSourcing\Command\CommandHandler;
 use Soa\EventSourcing\Event\EventStream;
@@ -11,7 +12,6 @@ use Soa\EventSourcing\Repository\AggregateRoot;
 use UserIdentity\Domain\Event\LogUserInWithPasswordFailed;
 use UserIdentity\Domain\Event\UserWithPasswordLoggedIn;
 use UserIdentity\Domain\PasswordEncryption;
-use UserIdentity\Domain\TokenFactory;
 use UserIdentity\Domain\UserWithPasswordContentValidator;
 
 class LogUserInWithPasswordCommandHandler implements CommandHandler

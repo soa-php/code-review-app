@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
+use Common\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
+use Common\Ui\Http\Restful\Middleware\ErrorHandlerMiddleware;
 use Psr\Container\ContainerInterface;
-use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
 use Zend\Expressive\Application;
 use Zend\Expressive\Handler\NotFoundHandler;
 use Zend\Expressive\Helper\ServerUrlMiddleware;
@@ -15,7 +16,6 @@ use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\ProblemDetails\ProblemDetailsNotFoundHandler;
-use Zend\Stratigility\Middleware\ErrorHandler;
 
 /*
  * Setup middleware pipeline:
@@ -23,7 +23,7 @@ use Zend\Stratigility\Middleware\ErrorHandler;
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.
-    $app->pipe(ErrorHandler::class);
+    $app->pipe(ErrorHandlerMiddleware::class);
     $app->pipe(ServerUrlMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
