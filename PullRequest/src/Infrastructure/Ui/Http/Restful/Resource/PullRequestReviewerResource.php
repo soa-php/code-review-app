@@ -13,6 +13,7 @@ use function Martinezdelariva\Hydrator\hydrate;
 use const Martinezdelariva\Functional\_;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Soa\EventSourcing\Command\CommandResponse;
 use Soa\EventSourcing\Event\DomainEvent;
 use Zend\Diactoros\Response\EmptyResponse;

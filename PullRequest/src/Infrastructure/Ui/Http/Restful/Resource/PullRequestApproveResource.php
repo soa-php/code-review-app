@@ -13,6 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use PullRequest\Application\PullRequestCommandBus;
 use PullRequest\Domain\Event\ApprovePullRequestFailed;
 use PullRequest\Domain\UseCase\ApprovePullRequestCommand;
+use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Soa\EventSourcing\Command\CommandResponse;
 use Soa\EventSourcing\Event\DomainEvent;
 use Zend\Diactoros\Response\EmptyResponse;

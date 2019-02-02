@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
+namespace PullRequest\Infrastructure\Ui\Http\Restful\Middleware;
 
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use Psr\Container\ContainerInterface;

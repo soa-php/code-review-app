@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace PullRequest\Infrastructure\Di\ZendServiceManager\Factory;
 
 use Interop\Container\ContainerInterface;
-use PullRequest\Infrastructure\Ui\Http\Restful\Resource\AbstractRestfulResourceMiddleware;
+use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
 class RestFullMiddlewareAbstractFactory implements AbstractFactoryInterface

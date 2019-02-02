@@ -12,6 +12,7 @@ use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\DatabaseIdentifierGen
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestProjectionTable;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AbstractMessageListenerFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessageSubscriberFactory;
+use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\AuthorizationMiddlewareFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\MessageRouterFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PullRequestProjectionTableMongoDbFactory;
@@ -31,6 +32,8 @@ use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\OutgoingMessageStor
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PublishedMessageTrackerMongoDbFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
+use PullRequest\Infrastructure\Ui\Http\Restful\Authorization\TokenParser;
+use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
 use Soa\Clock\Clock;
 use Soa\Clock\ClockImpl;
 use Soa\MessageStore\Publisher\MessageDeliveryService;
@@ -62,6 +65,7 @@ return [
             MessageRouter::class                => MessageRouterFactory::class,
             MessageSubscriber::class            => AmqpMessageSubscriberFactory::class,
             ErrorMessageTimeoutTracker::class   => ErrorMessageTimeoutTrackerMongoDbFactory::class,
+            AuthorizationMiddleware::class      => AuthorizationMiddlewareFactory::class,
         ],
         'invokables' => [
             Clock::class                                   => ClockImpl::class,
@@ -70,6 +74,7 @@ return [
             AssignPullRequestReviewerCommandHandler::class => AssignPullRequestReviewerCommandHandler::class,
             MergePullRequestCommandHandler::class          => MergePullRequestCommandHandler::class,
             PullRequestProjector::class                    => PullRequestProjector::class,
+            TokenParser::class                             => TokenParser\JwtTokenParser::class,
         ],
         'abstract_factories' => [
             RestFullMiddlewareAbstractFactory::class,
