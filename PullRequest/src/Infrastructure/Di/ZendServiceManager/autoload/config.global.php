@@ -32,6 +32,7 @@ use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\OutgoingMessageStor
 use PullRequest\Infrastructure\Di\ZendServiceManager\Factory\PublishedMessageTrackerMongoDbFactory;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
+use PullRequest\Infrastructure\Ui\Http\Restful\Authorization\AuthorizationRules;
 use PullRequest\Infrastructure\Ui\Http\Restful\Authorization\TokenParser;
 use PullRequest\Infrastructure\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
 use Soa\Clock\Clock;
@@ -82,6 +83,7 @@ return [
             ConfigAbstractFactory::class,
         ],
     ],
+    'authorization-rules' => AuthorizationRules::getRules(),
     'bounded-context' => 'pull_request',
     'mongo-db'        => 'mongodb://mongo:27017',
     'rabbitmq'        => [
