@@ -5,7 +5,8 @@
   "require": {
     "php": "^7.2",
     "mgonzalezbaile/common": "dev-user-identity-bc",
-    "martinezdelariva/functional": "dev-master"
+    "martinezdelariva/functional": "dev-master",
+    "ext-json": "*"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^2.12",
@@ -24,7 +25,10 @@
   "repositories": [
     {
       "type": "path",
-      "url": "../Common"
+      "url": "../Common",
+      "options": {
+        "symlink": false
+      }
     }
   ],
   "config": {

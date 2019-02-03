@@ -4,26 +4,26 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Authorization\Token;
 use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use PullRequest\Application\PullRequestCommandBus;
 use PullRequest\Domain\Event\PullRequestCreationFailed;
 use PullRequest\Domain\UseCase\CreatePullRequestCommand;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
-use function Martinezdelariva\Hydrator\hydrate;
 use const Martinezdelariva\Functional\_;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Soa\EventSourcing\Command\CommandResponse;
 use Soa\EventSourcing\Event\DomainEvent;
 use Soa\EventSourcing\Repository\AggregateRootNotFound;
-use Zend\Diactoros\Response\JsonResponse;
+use Zend\Diactoros\Response\EmptyResponse;
 
 class PullRequestCollectionResource extends AbstractRestfulResourceMiddleware
 {
     public function post(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->buildCommand($request)->withAggregateRootId($this->identifierGenerator->nextIdentity());
+        $command = $this->buildCommand($request);
 
         $result = $this->commandBus(PullRequestCommandBus::class)->handle($command);
 
@@ -32,7 +32,15 @@ class PullRequestCollectionResource extends AbstractRestfulResourceMiddleware
 
     private function buildCommand(ServerRequestInterface $request): CreatePullRequestCommand
     {
-        return hydrate(CreatePullRequestCommand::class, json_decode($request->getBody()->getContents(), true));
+        /** @var Token $loggedUser */
+        $loggedUser = $request->getAttribute(Token::class);
+        $params     = $this->getParamsFromRequest($request);
+
+        return new CreatePullRequestCommand(
+            $this->identifierGenerator->nextIdentity(),
+            $params->get('code'),
+            $loggedUser->userId()
+        );
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface
@@ -55,7 +63,7 @@ class PullRequestCollectionResource extends AbstractRestfulResourceMiddleware
             },
 
             _ => function (DomainEvent $domainEvent) {
-                return (new JsonResponse([], Httpstatuscodes::HTTP_CREATED))->withHeader('Location', $domainEvent->streamId());
+                return (new EmptyResponse(Httpstatuscodes::HTTP_CREATED))->withHeader('Location', $domainEvent->streamId());
             },
         ];
 

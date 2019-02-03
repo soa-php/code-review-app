@@ -13,14 +13,25 @@ class ApprovePullRequestCommand extends ConventionBasedCommand
      */
     private $approver;
 
-    public function __construct(string $id, string $reviewer)
+    /**
+     * @var string
+     */
+    private $pullRequestId;
+
+    public function __construct(string $pullRequestId, string $reviewer)
     {
         $this->approver        = $reviewer;
-        $this->aggregateRootId = $id;
+        $this->pullRequestId   = $pullRequestId;
+        $this->aggregateRootId = $pullRequestId;
     }
 
     public function approver(): string
     {
         return $this->approver;
+    }
+
+    public function pullRequestId(): string
+    {
+        return $this->pullRequestId;
     }
 }

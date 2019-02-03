@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Authorization\Token;
 use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
-use function Martinezdelariva\Hydrator\hydrate;
 use const Martinezdelariva\Functional\_;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,16 +22,19 @@ class PullRequestApproveResource extends AbstractRestfulResourceMiddleware
 {
     public function put(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->buildCommand($request->getBody()->getContents())->withAggregateRootId($request->getAttribute('id'));
+        $command = $this->buildCommand($request);
 
         $result = $this->commandBus(PullRequestCommandBus::class)->handle($command);
 
         return $this->buildResponse($request, $result);
     }
 
-    private function buildCommand(string $body): ApprovePullRequestCommand
+    private function buildCommand(ServerRequestInterface $request): ApprovePullRequestCommand
     {
-        return hydrate(ApprovePullRequestCommand::class, json_decode($body, true));
+        /** @var Token $loggedUser */
+        $loggedUser = $request->getAttribute(Token::class);
+
+        return new ApprovePullRequestCommand($request->getAttribute('id'), $loggedUser->userId());
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface

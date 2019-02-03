@@ -17,27 +17,27 @@ class ApprovePullRequestCommandHandler implements CommandHandler
 {
     /**
      * @param ApprovePullRequestCommand $command
-     * @param PullRequest               $aggregateRoot
+     * @param PullRequest               $pullRequest
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot): EventStream
+    public function handle(Command $command, AggregateRoot $pullRequest): EventStream
     {
-        if ($aggregateRoot->mergeable()) {
-            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->aggregateRootId(), $command->approver(), ApprovePullRequestFailed::ALREADY_MARKED_AS_MERGEABLE));
+        if ($pullRequest->mergeable()) {
+            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->pullRequestId(), $command->approver(), ApprovePullRequestFailed::ALREADY_MARKED_AS_MERGEABLE));
         }
 
-        if (!in_array($command->approver(), $aggregateRoot->assignedReviewers())) {
-            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->aggregateRootId(), $command->approver(), ApprovePullRequestFailed::APPROVER_IS_NOT_REVIEWER));
+        if (!in_array($command->approver(), $pullRequest->assignedReviewers())) {
+            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->pullRequestId(), $command->approver(), ApprovePullRequestFailed::APPROVER_IS_NOT_REVIEWER));
         }
 
-        if (in_array($command->approver(), $aggregateRoot->approvers())) {
-            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->aggregateRootId(), $command->approver(), ApprovePullRequestFailed::APPROVER_ALREADY_APPROVED));
+        if (in_array($command->approver(), $pullRequest->approvers())) {
+            return EventStream::fromDomainEvents(new ApprovePullRequestFailed($command->pullRequestId(), $command->approver(), ApprovePullRequestFailed::APPROVER_ALREADY_APPROVED));
         }
 
-        $events[] = new PullRequestApproved($command->aggregateRootId(), $command->approver());
+        $events[] = new PullRequestApproved($command->pullRequestId(), $command->approver());
 
         $approvalsRequired = 2;
-        if (count($aggregateRoot->approvers()) + 1 === $approvalsRequired) {
-            $events[] = new PullRequestMarkedAsMergeable($command->aggregateRootId());
+        if (count($pullRequest->approvers()) + 1 === $approvalsRequired) {
+            $events[] = new PullRequestMarkedAsMergeable($command->pullRequestId());
         }
 
         return EventStream::fromDomainEvents(...$events);

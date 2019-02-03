@@ -8,8 +8,19 @@ use Soa\EventSourcing\Command\ConventionBasedCommand;
 
 class MergePullRequestCommand extends ConventionBasedCommand
 {
-    public function __construct(string $id)
+    /**
+     * @var string
+     */
+    private $pullRequestId;
+
+    public function __construct(string $pullRequestId)
     {
-        $this->aggregateRootId = $id;
+        $this->pullRequestId   = $pullRequestId;
+        $this->aggregateRootId = $pullRequestId;
+    }
+
+    public function pullRequestId(): string
+    {
+        return $this->pullRequestId;
     }
 }

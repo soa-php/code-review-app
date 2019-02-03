@@ -15,9 +15,10 @@ use Common\Di\Factory\ErrorHandlerMiddlewareFactory;
 use Common\Di\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
 use Common\Di\Factory\IdentifierGeneratorAutoIncrementFactory;
 use Common\Di\Factory\IncomingMessageStoreMongoDbFactory;
-use Common\Di\Factory\LoggerInterfaceStdoutFactory;
 use Common\Di\Factory\MessageDeliveryServiceFactory;
 use Common\Di\Factory\MessageRouterFactory;
+use Common\Di\Factory\MonologFileLoggerHandlerFactory;
+use Common\Di\Factory\MonologLoggerFactory;
 use Common\Di\Factory\OutgoingMessageStoreMongoDbFactory;
 use Common\Di\Factory\PublishedMessageTrackerMongoDbFactory;
 use Common\Di\Factory\RestFullMiddlewareAbstractFactory;
@@ -25,6 +26,9 @@ use Common\Ui\Http\Restful\Authorization\JwtToken\JwtTokenParser;
 use Common\Ui\Http\Restful\Authorization\TokenParser;
 use Common\Ui\Http\Restful\Middleware\AuthorizationMiddleware;
 use Common\Ui\Http\Restful\Middleware\ErrorHandlerMiddleware;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Logger;
+use Psr\Log\LogLevel;
 use PullRequest\Application\Projection\PullRequestProjector;
 use PullRequest\Infrastructure\Di\ZendServiceManager\Alias\PullRequestRepository;
 use PullRequest\Domain\UseCase\ApprovePullRequestCommandHandler;
@@ -62,7 +66,7 @@ return [
             MessagePublisher::class             => AmqpMessagePublisherFactory::class,
             IncomingMessageStore::class         => IncomingMessageStoreMongoDbFactory::class,
             OutgoingMessageStore::class         => OutgoingMessageStoreMongoDbFactory::class,
-            LoggerInterface::class              => LoggerInterfaceStdoutFactory::class,
+            LoggerInterface::class              => MonologLoggerFactory::class,
             DatabaseIdentifierGenerator::class  => IdentifierGeneratorAutoIncrementFactory::class,
             PullRequestProjectionTable::class   => PullRequestProjectionTableMongoDbFactory::class,
             PullRequestRepository::class        => PullRequestRepositoryMongoDbFactory::class,
@@ -87,8 +91,18 @@ return [
             ConfigAbstractFactory::class,
         ],
     ],
-    'authorization-rules' => AuthorizationRules::getRules(),
-    'service-name'        => 'pull_request',
+    'authorization-rules'  => AuthorizationRules::getRules(),
+    'service-name'         => 'pull_request',
+    'logger-handlers'      => [
+        'file'      => [
+            'level'     => Logger::toMonologLevel(LogLevel::INFO),
+            'formatter' => JsonFormatter::class,
+            'path'      => __DIR__ . '/../../../../../var/file.log',
+        ],
+    ],
+    'enabled-loggers'      => [
+        'file'      => MonologFileLoggerHandlerFactory::class,
+    ],
     'mongo-db'            => [
         'connection' => 'mongodb://mongo:27017',
         'database'   => 'pull_request',
