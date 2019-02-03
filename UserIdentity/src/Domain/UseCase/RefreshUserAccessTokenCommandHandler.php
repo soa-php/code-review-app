@@ -33,17 +33,17 @@ class RefreshUserAccessTokenCommandHandler implements CommandHandler
     }
 
     /**
-     * @param User                          $aggregateRoot
+     * @param User                          $user
      * @param RefreshUserAccessTokenCommand $command
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot): EventStream
+    public function handle(Command $command, AggregateRoot $user): EventStream
     {
-        if (!$this->tokenValidator->isValid($aggregateRoot->refreshToken())) {
-            return EventStream::fromDomainEvents(RefreshUserAccessTokenFailed::becauseGivenRefreshTokenIsInvalid($aggregateRoot->id(), $aggregateRoot->refreshToken()));
+        if (!$this->tokenValidator->isValid($user->refreshToken())) {
+            return EventStream::fromDomainEvents(RefreshUserAccessTokenFailed::becauseGivenRefreshTokenIsInvalid($user->id(), $user->refreshToken()));
         }
 
         return EventStream::fromDomainEvents(
-            new UserAccessTokenRefreshed($aggregateRoot->id(), $this->tokenFactory->createAccessToken($aggregateRoot->id(), $aggregateRoot->roles()))
+            new UserAccessTokenRefreshed($user->id(), $this->tokenFactory->createAccessToken($user->id(), $user->roles()))
         );
     }
 }

@@ -28,13 +28,19 @@ class LogUserInWithPasswordCommand extends ConventionBasedCommand
      */
     private $roles;
 
-    public function __construct(string $id, string $username, string $password, string $email, array $roles)
+    /**
+     * @var string
+     */
+    private $userId;
+
+    public function __construct(string $userId, string $username, string $password, string $email, array $roles)
     {
         $this->username        = $username;
         $this->password        = $password;
         $this->email           = $email;
-        $this->aggregateRootId = $id;
         $this->roles           = $roles;
+        $this->userId          = $userId;
+        $this->aggregateRootId = $userId;
     }
 
     public function username(): string
@@ -55,5 +61,10 @@ class LogUserInWithPasswordCommand extends ConventionBasedCommand
     public function roles(): array
     {
         return $this->roles;
+    }
+
+    public function userId(): string
+    {
+        return $this->userId;
     }
 }

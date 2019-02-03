@@ -20,16 +20,16 @@ class UserAccessTokenResource extends AbstractRestfulResourceMiddleware
 {
     public function put(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->buildCommand($request->getBody()->getContents())->withAggregateRootId($request->getAttribute('id'));
+        $command = $this->buildCommand($request);
 
         $result = $this->commandBus(UserIdentityCommandBus::class)->handle($command);
 
         return $this->buildResponse($request, $result);
     }
 
-    private function buildCommand(string $body): RefreshUserAccessTokenCommand
+    private function buildCommand(ServerRequestInterface $request): RefreshUserAccessTokenCommand
     {
-        return new RefreshUserAccessTokenCommand();
+        return new RefreshUserAccessTokenCommand($request->getAttribute('id'));
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface

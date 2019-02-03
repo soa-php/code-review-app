@@ -44,24 +44,24 @@ class LogUserInWithPasswordCommandHandler implements CommandHandler
     /**
      * @param LogUserInWithPasswordCommand $command
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot = null): EventStream
+    public function handle(Command $command, AggregateRoot $user = null): EventStream
     {
         $validationResult = $this->contentValidator->validate($command);
 
         if (!$validationResult->wasSucceed()) {
             return EventStream::fromDomainEvents(
-                LogUserInWithPasswordFailed::withReason($command->aggregateRootId(), $validationResult->failureReason())
+                LogUserInWithPasswordFailed::withReason($command->userId(), $validationResult->failureReason())
             );
         }
 
         return EventStream::fromDomainEvents(new UserWithPasswordLoggedIn(
-            $command->aggregateRootId(),
+            $command->userId(),
             $command->username(),
             $this->passwordEncryption->encrypt($command->password()),
             $command->email(),
             $command->roles(),
-            $this->tokenBuilder->createAccessToken($command->aggregateRootId(), $command->roles()),
-            $this->tokenBuilder->createRefreshToken($command->aggregateRootId(), $command->roles())
+            $this->tokenBuilder->createAccessToken($command->userId(), $command->roles()),
+            $this->tokenBuilder->createRefreshToken($command->userId(), $command->roles())
         ));
     }
 }

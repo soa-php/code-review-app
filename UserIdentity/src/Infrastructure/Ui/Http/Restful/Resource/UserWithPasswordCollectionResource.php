@@ -7,7 +7,6 @@ namespace UserIdentity\Infrastructure\Ui\Http\Restful\Resource;
 use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
-use function Martinezdelariva\Hydrator\hydrate;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use UserIdentity\Application\UserIdentityCommandBus;
@@ -21,16 +20,24 @@ class UserWithPasswordCollectionResource extends AbstractRestfulResourceMiddlewa
 {
     public function post(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->buildCommand($request->getBody()->getContents())->withAggregateRootId($this->identifierGenerator->nextIdentity());
+        $command = $this->buildCommand($request);
 
         $result = $this->commandBus(UserIdentityCommandBus::class)->handle($command);
 
         return $this->buildResponse($request, $result);
     }
 
-    private function buildCommand(string $body): LogUserInWithPasswordCommand
+    private function buildCommand(ServerRequestInterface $request): LogUserInWithPasswordCommand
     {
-        return hydrate(LogUserInWithPasswordCommand::class, json_decode($body, true));
+        $params = $this->getParamsFromRequest($request);
+
+        return new LogUserInWithPasswordCommand(
+            $this->identifierGenerator->nextIdentity(),
+                $params->get('username'),
+                $params->get('password'),
+                $params->get('email'),
+                $params->get('roles')
+            );
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface
