@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Common\Ui\Http\Restful\Middleware;
 
+use Common\Ui\Http\Restful\Authorization\Token;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -52,7 +53,7 @@ class AuthorizationMiddleware implements MiddlewareInterface
                 return new EmptyResponse(Httpstatuscodes::HTTP_UNAUTHORIZED);
             }
 
-            $request = $request->withAttribute('token', $token);
+            $request = $request->withAttribute(Token::class, $token);
         }
 
         return $handler->handle($request);

@@ -36,6 +36,8 @@ class ErrorHandlerMiddleware implements MiddlewareInterface
         try {
             $response = $handler->handle($request);
         } catch (\Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             return $this->problemDetailsResponseFactory->createResponseFromThrowable($request, $e);
         }
 

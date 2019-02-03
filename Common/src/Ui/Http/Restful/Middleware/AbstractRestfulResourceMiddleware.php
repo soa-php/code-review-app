@@ -15,6 +15,7 @@ use Soa\IdentifierGenerator\IdentifierGenerator;
 use Soa\IdentifierGenerator\UuidIdentifierGenerator;
 use Soa\Traceability\Trace;
 use Zend\ProblemDetails\ProblemDetailsResponseFactory;
+use Zend\Stdlib\Parameters;
 
 /**
  * @method ResponseInterface get(ServerRequestInterface $request)
@@ -68,6 +69,11 @@ abstract class AbstractRestfulResourceMiddleware implements MiddlewareInterface
         }
 
         return $response;
+    }
+
+    protected function getParamsFromRequest(ServerRequestInterface $request): Parameters
+    {
+        return new Parameters(json_decode($request->getBody()->getContents(), true));
     }
 
     protected function commandBus(string $commandBusName): CommandBus
