@@ -6,7 +6,6 @@ use Common\Di\Alias\DatabaseIdentifierGenerator;
 use Common\Di\Alias\IncomingMessageStore;
 use Common\Di\Alias\OutgoingMessageStore;
 use Common\Di\Factory\AbstractMessageListenerFactory;
-use Common\Di\Factory\AmqpMessagePublisherFactory;
 use Common\Di\Factory\AmqpMessageSubscriberFactory;
 use Common\Di\Factory\ClientMongoDbFactory;
 use Common\Di\Factory\DatabaseMongoFactory;
@@ -20,6 +19,7 @@ use Common\Di\Factory\MonologFileLoggerHandlerFactory;
 use Common\Di\Factory\OutgoingMessageStoreMongoDbFactory;
 use Common\Di\Factory\PublishedMessageTrackerMongoDbFactory;
 use Common\Di\Factory\RestFullMiddlewareAbstractFactory;
+use MessagePublisher\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessagePublisherFactory;
 use Monolog\Formatter\JsonFormatter;
 use Monolog\Logger;
 use Payment\Application\Projection\PaymentProjector;
@@ -78,7 +78,7 @@ return [
             AbstractMessageListenerFactory::class,
         ],
     ],
-    'service-name'         => 'payment',
+    'message-recipients' => ['payment', 'pull_request', 'merge_pull_request_pm', 'user_identity'],
     'logger-handlers'      => [
         'file'      => [
             'level'     => Logger::toMonologLevel(LogLevel::INFO),

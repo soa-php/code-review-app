@@ -17,7 +17,9 @@ RUN set -xeu \
         rabbitmq-server \
     && docker-php-ext-install \
         zip \
-        pcntl
+        pcntl \
+        pdo \
+        pdo_mysql
 
 RUN touch /usr/local/etc/php/php.ini
 

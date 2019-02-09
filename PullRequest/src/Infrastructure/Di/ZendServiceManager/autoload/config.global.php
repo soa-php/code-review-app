@@ -105,7 +105,7 @@ return [
     ],
     'mongo-db'            => [
         'connection' => 'mongodb://mongo:27017',
-        'database'   => 'pull_request',
+        'database'   => 'code_review',
     ],
     'rabbitmq'        => [
         'credentials' => [

@@ -1,87 +1,14 @@
 version: '3'
 services:
-  pull_request_message_listener:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-    - ..:/srv/app
-    working_dir: /srv/app/PullRequest
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
-    networks:
-      - common
-
-  pull_request_message_publisher:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-      - ..:/srv/app
-    working_dir: /srv/app/PullRequest
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
-    networks:
-      - common
-
+#SERVERS
   pull_request_server:
     image: mgonzalezbaile/php_base:1.0
     volumes:
-      - ..:/srv/app
+    - ..:/srv/app
     working_dir: /srv/app/PullRequest
     ports:
-      - "8080:8080"
+    - "8080:8080"
     command: 'php -S 0.0.0.0:8080 /srv/app/PullRequest/src/Infrastructure/Ui/Http/index.php'
-    networks:
-      - common
-
-  merge_pull_request_pm_message_listener:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-      - ..:/srv/app
-    working_dir: /srv/app/MergePullRequestPm
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
-    networks:
-      - common
-
-  merge_pull_request_pm_message_publisher:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-      - ..:/srv/app
-    working_dir: /srv/app/MergePullRequestPm
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
-    networks:
-      - common
-
-  payment_message_listener:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-    - ..:/srv/app
-    working_dir: /srv/app/Payment
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
-    networks:
-    - common
-
-  payment_message_publisher:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-    - ..:/srv/app
-    working_dir: /srv/app/Payment
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
-    networks:
-    - common
-#
-#  payment_server:
-#    image: mgonzalezbaile/php_base:1.0
-#    volumes:
-#    - ..:/srv/app
-#    working_dir: /srv/app/Payment
-#    ports:
-#    - "8080:8080"
-#    command: 'php -S 0.0.0.0:8080 /srv/app/Payment/src/Infrastructure/Ui/Http/index.php'
-#    networks:
-#    - common
-
-  user_identity_message_publisher:
-    image: mgonzalezbaile/php_base:1.0
-    volumes:
-    - ..:/srv/app
-    working_dir: /srv/app/UserIdentity
-    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
     networks:
     - common
 
@@ -95,6 +22,44 @@ services:
     command: 'php -S 0.0.0.0:8080 /srv/app/UserIdentity/src/Infrastructure/Ui/Http/index.php'
     networks:
     - common
+
+#LISTENERS
+  pull_request_message_listener:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+    - ..:/srv/app
+    working_dir: /srv/app/PullRequest
+    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
+    networks:
+      - common
+
+  merge_pull_request_pm_message_listener:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+      - ..:/srv/app
+    working_dir: /srv/app/MergePullRequestPm
+    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
+    networks:
+      - common
+
+  payment_message_listener:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+    - ..:/srv/app
+    working_dir: /srv/app/Payment
+    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/listen-messages'
+    networks:
+    - common
+
+  message_publisher:
+    image: mgonzalezbaile/php_base:1.0
+    volumes:
+      - ..:/srv/app
+    working_dir: /srv/app/MessagePublisher
+    command: '/srv/app/docker/wait-for-it.sh rabbitmq:15672 -- php bin/publish-messages'
+    networks:
+      - common
+
 
 networks:
   common:

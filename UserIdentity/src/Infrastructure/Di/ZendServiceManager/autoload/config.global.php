@@ -96,7 +96,7 @@ return [
     'service-name'        => 'user_identity',
     'mongo-db'            => [
         'connection' => 'mongodb://mongo:27017',
-        'database'   => 'user_identity',
+        'database'   => 'code_review',
     ],
     'rabbitmq'        => [
         'credentials' => [

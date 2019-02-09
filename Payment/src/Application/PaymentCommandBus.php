@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Payment\Application;
 
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
 use Payment\Application\Projection\PaymentProjector;
-use Payment\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
 use Payment\Infrastructure\Di\ZendServiceManager\Alias\PaymentRepository;
 use Psr\Container\ContainerInterface;
-use Payment\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
 use Payment\Infrastructure\Di\ZendServiceManager\Alias\PaymentProjectionTable;
 use Soa\Clock\ClockImpl;
 use Soa\EventSourcing\Command\Command;

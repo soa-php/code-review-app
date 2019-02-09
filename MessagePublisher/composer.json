@@ -1,6 +1,6 @@
 {
-  "name": "mgonzalezbaile/payment",
-  "description": "Payment Bounded Context",
+  "name": "mgonzalezbaile/message-publisher",
+  "description": "Component in charge of publishing persisted messages",
   "license": "MIT",
   "require": {
     "php": "^7.2",
@@ -14,7 +14,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Payment\\": "src/"
+      "MessagePublisher\\": "src/"
     }
   },
   "repositories": [
