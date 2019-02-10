@@ -1,0 +1,22 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__);
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules(
+        [
+            '@Symfony' => true,
+            'array_syntax' => ['syntax' => 'short'],
+            'concat_space' => ['spacing' => 'one'],
+            'declare_strict_types' => true,
+            'linebreak_after_opening_tag' => true,
+            'phpdoc_order' => true,
+            'binary_operator_spaces' => [
+                'align_equals' => true,
+                'align_double_arrow' => true,
+            ],
+        ]
+    )
+    ->setFinder($finder);

@@ -13,14 +13,25 @@ class AssignPullRequestReviewerCommand extends ConventionBasedCommand
      */
     private $reviewer;
 
-    public function __construct(string $id, string $reviewer)
+    /**
+     * @var string
+     */
+    private $pullRequestId;
+
+    public function __construct(string $pullRequestId, string $reviewer)
     {
         $this->reviewer        = $reviewer;
-        $this->aggregateRootId = $id;
+        $this->pullRequestId   = $pullRequestId;
+        $this->aggregateRootId = $pullRequestId;
     }
 
     public function reviewer(): string
     {
         return $this->reviewer;
+    }
+
+    public function pullRequestId(): string
+    {
+        return $this->pullRequestId;
     }
 }

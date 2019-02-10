@@ -2,36 +2,40 @@
 
 declare(strict_types=1);
 
+use Common\Di\Alias\DatabaseIdentifierGenerator;
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
+use Common\Di\Factory\AmqpMessagePublisherFactory;
+use Common\Di\Factory\AmqpMessageSubscriberFactory;
+use Common\Di\Factory\ClientMongoDbFactory;
+use Common\Di\Factory\DatabaseMongoFactory;
+use Common\Di\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
+use Common\Di\Factory\IdentifierGeneratorAutoIncrementFactory;
+use Common\Di\Factory\IncomingMessageStoreMongoDbFactory;
+use Common\Di\Factory\LoggerInterfaceStdoutFactory;
+use Common\Di\Factory\MessageDeliveryServiceFactory;
+use Common\Di\Factory\MessageRouterFactory;
+use Common\Di\Factory\MonologFileLoggerHandlerFactory;
+use Common\Di\Factory\OutgoingMessageStoreMongoDbFactory;
+use Common\Di\Factory\PublishedMessageTrackerMongoDbFactory;
+use Common\Di\Factory\RestFullMiddlewareAbstractFactory;
 use MergePullRequestPm\Domain\UseCase\MoneyCollectedHandler;
 use MergePullRequestPm\Domain\UseCase\MoneyPayedHandler;
 use MergePullRequestPm\Domain\UseCase\PullRequestMarkedAsMergeableHandler;
 use MergePullRequestPm\Domain\UseCase\PullRequestMergedHandler;
 use MergePullRequestPm\Domain\Provider\PullRequestProvider;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\AbstractMessageListenerFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessageSubscriberFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\ErrorMessageTimeoutTrackerMongoDbFactory;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\MoneyCollectedHandlerFactory;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\MoneyPayedHandlerFactory;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\PullRequestMarkedAsMergeableHandlerFactory;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\PullRequestProviderMongoDbFactory;
 use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\RepositoryMongoDbFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Alias\DatabaseIdentifierGenerator;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\MessageRouterFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\RestFullMiddlewareAbstractFactory;
 use MongoDB\Client;
 use MongoDB\Database;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\AmqpMessagePublisherFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\ClientMongoDbFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\DatabaseMongoFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\IdentifierGeneratorAutoIncrementFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\IncomingMessageStoreMongoDbFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\LoggerInterfaceStdoutFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\MessageDeliveryServiceFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\OutgoingMessageStoreMongoDbFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Factory\PublishedMessageTrackerMongoDbFactory;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
+use Psr\Log\LogLevel;
 use Soa\Clock\Clock;
 use Soa\Clock\ClockImpl;
 use Soa\MessageStore\Publisher\MessageDeliveryService;
@@ -78,9 +82,21 @@ return [
             AbstractMessageListenerFactory::class,
         ],
     ],
-    'process-manager'          => 'merge_pull_request_pm',
-    'managed-bounded-contexts' => ['pull_request', 'payment'],
-    'mongo-db'                 => 'mongodb://mongo:27017',
+    'service-name'          => 'merge_pull_request_pm',
+    'mongo-db'              => [
+        'connection' => 'mongodb://mongo:27017',
+        'database'   => 'code_review',
+    ],
+    'logger-handlers'      => [
+        'file'      => [
+            'level'     => Logger::toMonologLevel(LogLevel::INFO),
+            'formatter' => JsonFormatter::class,
+            'path'      => __DIR__ . '/../../../../../var/file.log',
+        ],
+    ],
+    'enabled-loggers'      => [
+        'file'      => MonologFileLoggerHandlerFactory::class,
+    ],
     'rabbitmq'                 => [
         'credentials' => [
             'host'     => 'rabbitmq',
@@ -88,6 +104,7 @@ return [
             'login'    => 'devuser',
             'password' => 'devpass',
         ],
+        'dead-letter-seconds' => 5,
     ],
     // Toggle the configuration cache. Set this to boolean false, or remove the
     // directive, to disable configuration caching. Toggling development mode

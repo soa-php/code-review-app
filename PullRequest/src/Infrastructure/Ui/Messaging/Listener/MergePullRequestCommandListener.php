@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Messaging\Listener;
 
+use Common\Ui\Messaging\Listener\AbstractMessageListener;
 use function Martinezdelariva\Functional\match;
 use function Martinezdelariva\Hydrator\hydrate;
 use PullRequest\Application\PullRequestCommandBus;
@@ -16,7 +17,7 @@ class MergePullRequestCommandListener extends AbstractMessageListener
 {
     public function handle(Message $message): void
     {
-        $command = hydrate(MergePullRequestCommand::class, $message->body());
+        $command = new MergePullRequestCommand($message->body()['aggregateRootId']);
 
         /** @var CommandResponse $result */
         $result = $this->commandBus(PullRequestCommandBus::class, $message)->handle($command);

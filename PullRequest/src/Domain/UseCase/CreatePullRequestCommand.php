@@ -18,10 +18,17 @@ class CreatePullRequestCommand extends ConventionBasedCommand
      */
     private $writer;
 
-    public function __construct(string $code, string $writer)
+    /**
+     * @var string
+     */
+    private $pullRequestId;
+
+    public function __construct(string $pullRequestId, string $code, string $writer)
     {
-        $this->code   = $code;
-        $this->writer = $writer;
+        $this->code            = $code;
+        $this->writer          = $writer;
+        $this->pullRequestId   = $pullRequestId;
+        $this->aggregateRootId = $pullRequestId;
     }
 
     public function code(): string
@@ -32,5 +39,10 @@ class CreatePullRequestCommand extends ConventionBasedCommand
     public function writer(): string
     {
         return $this->writer;
+    }
+
+    public function pullRequestId(): string
+    {
+        return $this->pullRequestId;
     }
 }

@@ -1,0 +1,36 @@
+{
+  "name": "mgonzalezbaile/user-identity",
+  "description": "User Identity Bounded Context",
+  "license": "MIT",
+  "require": {
+    "php": "^7.2",
+    "mgonzalezbaile/common": "dev-user-identity-bc",
+    "martinezdelariva/functional": "dev-master"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.12",
+    "phpunit/phpunit": "^7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "UserIdentity\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "UserIdentityTest\\": "tests/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../Common",
+      "options": {
+        "symlink": false
+      }
+    }
+  ],
+  "config": {
+    "bin-dir": "bin/"
+  }
+}

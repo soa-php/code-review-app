@@ -16,18 +16,18 @@ class MergePullRequestCommandHandler implements CommandHandler
 {
     /**
      * @param MergePullRequestCommand $command
-     * @param PullRequest             $aggregateRoot
+     * @param PullRequest             $pullRequest
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot): EventStream
+    public function handle(Command $command, AggregateRoot $pullRequest): EventStream
     {
-        if (!$aggregateRoot->mergeable()) {
-            return EventStream::fromDomainEvents(new MergePullRequestFailed($command->aggregateRootId(), MergePullRequestFailed::NOT_MERGEABLE));
+        if (!$pullRequest->mergeable()) {
+            return EventStream::fromDomainEvents(new MergePullRequestFailed($command->pullRequestId(), MergePullRequestFailed::NOT_MERGEABLE));
         }
 
-        if ($aggregateRoot->merged()) {
-            return EventStream::fromDomainEvents(new MergePullRequestFailed($command->aggregateRootId(), MergePullRequestFailed::ALREADY_MERGED));
+        if ($pullRequest->merged()) {
+            return EventStream::fromDomainEvents(new MergePullRequestFailed($command->pullRequestId(), MergePullRequestFailed::ALREADY_MERGED));
         }
 
-        return EventStream::fromDomainEvents(new PullRequestMerged($command->aggregateRootId()));
+        return EventStream::fromDomainEvents(new PullRequestMerged($command->pullRequestId()));
     }
 }

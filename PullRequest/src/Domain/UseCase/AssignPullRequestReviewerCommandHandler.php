@@ -16,22 +16,22 @@ class AssignPullRequestReviewerCommandHandler implements CommandHandler
 {
     /**
      * @param AssignPullRequestReviewerCommand $command
-     * @param PullRequest                      $aggregateRoot
+     * @param PullRequest                      $pullRequest
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot): EventStream
+    public function handle(Command $command, AggregateRoot $pullRequest): EventStream
     {
         if (!$command->reviewer()) {
-            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->aggregateRootId(), $command->reviewer(), PullRequestReviewerAssignationFailed::EMPTY_REVIEWER));
+            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->pullRequestId(), $command->reviewer(), PullRequestReviewerAssignationFailed::EMPTY_REVIEWER));
         }
 
-        if (2 === count($aggregateRoot->assignedReviewers())) {
-            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->aggregateRootId(), $command->reviewer(), PullRequestReviewerAssignationFailed::MAX_REVIEWERS_ASSIGNED));
+        if (2 === count($pullRequest->assignedReviewers())) {
+            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->pullRequestId(), $command->reviewer(), PullRequestReviewerAssignationFailed::MAX_REVIEWERS_ASSIGNED));
         }
 
-        if (in_array($command->reviewer(), $aggregateRoot->assignedReviewers())) {
-            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->aggregateRootId(), $command->reviewer(), PullRequestReviewerAssignationFailed::REVIEWER_ALREADY_ASSIGNED));
+        if (in_array($command->reviewer(), $pullRequest->assignedReviewers())) {
+            return EventStream::fromDomainEvents(new PullRequestReviewerAssignationFailed($command->pullRequestId(), $command->reviewer(), PullRequestReviewerAssignationFailed::REVIEWER_ALREADY_ASSIGNED));
         }
 
-        return EventStream::fromDomainEvents(new PullRequestReviewerAssigned($command->aggregateRootId(), $command->reviewer()));
+        return EventStream::fromDomainEvents(new PullRequestReviewerAssigned($command->pullRequestId(), $command->reviewer()));
     }
 }

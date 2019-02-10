@@ -1,0 +1,49 @@
+{
+  "name": "mgonzalezbaile/common",
+  "description": "Common library for Code Review app",
+  "license": "MIT",
+  "require": {
+    "php": "^7.2",
+    "psr/container": "^1.0",
+    "lcobucci/jwt": "^3.2",
+    "psr/http-server-middleware": "^1.0",
+    "soa-php/message-store-amqp": "^1.0",
+    "soa-php/message-store-mongodb": "^1.0",
+    "soa-php/event-sourcing-middleware": "^1.0",
+    "zendframework/zend-servicemanager": "^3.3",
+    "zendframework/zend-config-aggregator": "^1.1",
+    "zendframework/zend-component-installer": "^2.1.1",
+    "zendframework/zend-diactoros": "^1.7.1 || ^2.0",
+    "zendframework/zend-expressive": "^3.0.1",
+    "zendframework/zend-expressive-helpers": "^5.0",
+    "zendframework/zend-stdlib": "^3.1",
+    "zendframework/zend-expressive-fastroute": "^3.0",
+    "zendframework/zend-problem-details": "^1.0",
+    "martinezdelariva/hydrator": "^1.0",
+    "martinezdelariva/functional": "dev-master",
+    "ext-json": "*",
+    "ext-mongodb": "*",
+    "filp/whoops": "^2.3",
+    "beberlei/assert": "^3.2",
+    "lukasoppermann/http-status": "^2.0",
+    "symfony/var-dumper": "^4.2",
+    "monolog/monolog": "^1.24"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.12",
+    "phpunit/phpunit": "^7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Common\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CommonTest\\": "tests/"
+    }
+  },
+  "config": {
+    "bin-dir": "bin/"
+  }
+}

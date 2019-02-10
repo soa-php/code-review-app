@@ -17,7 +17,9 @@ RUN set -xeu \
         rabbitmq-server \
     && docker-php-ext-install \
         zip \
-        pcntl
+        pcntl \
+        pdo \
+        pdo_mysql
 
 RUN touch /usr/local/etc/php/php.ini
 
@@ -36,7 +38,7 @@ RUN curl -L https://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -o php-cs-fi
 
 COPY .php_cs.dist /opt/php_cs/.php_cs.dist
 
-COPY scripts/lint_code.sh /usr/local/bin
+COPY lint_code.sh /usr/local/bin
 
 RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/composer/getcomposer.org/b107d959a5924af895807021fcef4ffec5a76aa9/web/installer \
  && php -r " \
@@ -53,4 +55,10 @@ RUN curl -s -f -L -o /tmp/installer.php https://raw.githubusercontent.com/compos
 
 ENV COMPOSER_HOME=/tmp
 
-COPY scripts/lint_code.sh /usr/local/bin/lint_code
+RUN set -xe \
+ && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
+ && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
+ && echo "xdebug.remote_host=192.168.99.1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+ && echo "xdebug.remote_port=5902" >> /usr/local/etc/php/conf.d/xdebug.ini \
+ && echo "xdebug.remote_handler=dbgp" >> /usr/local/etc/php/conf.d/xdebug.ini \
+ && echo "xdebug.idekey=XDEBUG" >> /usr/local/etc/php/conf.d/xdebug.ini

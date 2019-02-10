@@ -16,9 +16,9 @@ class CreatePullRequestCommandHandler implements CommandHandler
 {
     /**
      * @param CreatePullRequestCommand $command
-     * @param PullRequest              $aggregateRoot
+     * @param PullRequest              $pullRequest
      */
-    public function handle(Command $command, AggregateRoot $aggregateRoot = null): EventStream
+    public function handle(Command $command, AggregateRoot $pullRequest = null): EventStream
     {
         if (!$command->code()) {
             return EventStream::fromDomainEvents(new PullRequestCreationFailed($command->writer(), $command->code(), PullRequestCreationFailed::EMPTY_CODE));
@@ -28,6 +28,6 @@ class CreatePullRequestCommandHandler implements CommandHandler
             return EventStream::fromDomainEvents(new PullRequestCreationFailed($command->writer(), $command->code(), PullRequestCreationFailed::EMPTY_WRITER));
         }
 
-        return EventStream::fromDomainEvents(new PullRequestCreated($command->aggregateRootId(), $command->writer(), $command->code()));
+        return EventStream::fromDomainEvents(new PullRequestCreated($command->pullRequestId(), $command->writer(), $command->code()));
     }
 }

@@ -1,0 +1,32 @@
+{
+  "name": "mgonzalezbaile/message-publisher",
+  "description": "Component in charge of publishing persisted messages",
+  "license": "MIT",
+  "require": {
+    "php": "^7.2",
+    "mgonzalezbaile/common": "dev-user-identity-bc",
+    "martinezdelariva/functional": "dev-master",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "friendsofphp/php-cs-fixer": "^2.12",
+    "phpunit/phpunit": "^7.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "MessagePublisher\\": "src/"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../Common",
+      "options": {
+        "symlink": false
+      }
+    }
+  ],
+  "config": {
+    "bin-dir": "bin/"
+  }
+}

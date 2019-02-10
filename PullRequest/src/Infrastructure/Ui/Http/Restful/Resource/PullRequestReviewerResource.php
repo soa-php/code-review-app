@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace PullRequest\Infrastructure\Ui\Http\Restful\Resource;
 
+use Common\Ui\Http\Restful\Middleware\AbstractRestfulResourceMiddleware;
 use PullRequest\Application\PullRequestCommandBus;
 use PullRequest\Domain\Event\PullRequestReviewerAssignationFailed;
 use PullRequest\Domain\UseCase\AssignPullRequestReviewerCommand;
 use Lukasoppermann\Httpstatus\Httpstatuscodes;
 use function Martinezdelariva\Functional\match;
-use function Martinezdelariva\Hydrator\hydrate;
 use const Martinezdelariva\Functional\_;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,16 +21,21 @@ class PullRequestReviewerResource extends AbstractRestfulResourceMiddleware
 {
     public function put(ServerRequestInterface $request): ResponseInterface
     {
-        $command = $this->assignPullRequestReviewerCommand($request->getBody()->getContents())->withAggregateRootId($request->getAttribute('id'));
+        $command = $this->buildCommand($request);
 
         $result = $this->commandBus(PullRequestCommandBus::class)->handle($command);
 
         return $this->buildResponse($request, $result);
     }
 
-    private function assignPullRequestReviewerCommand(string $body): AssignPullRequestReviewerCommand
+    private function buildCommand(ServerRequestInterface $request): AssignPullRequestReviewerCommand
     {
-        return hydrate(AssignPullRequestReviewerCommand::class, json_decode($body, true));
+        $params = $this->getParamsFromRequest($request);
+
+        return new AssignPullRequestReviewerCommand(
+            $request->getAttribute('id'),
+            $params->get('reviewer')
+        );
     }
 
     private function buildResponse(ServerRequestInterface $request, CommandResponse $result): ResponseInterface

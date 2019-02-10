@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace MergePullRequestPm\Application;
 
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Alias\IncomingMessageStore;
-use MergePullRequestPm\Infrastructure\Di\ZendServiceManager\Alias\OutgoingMessageStore;
+use Common\Di\Alias\IncomingMessageStore;
+use Common\Di\Alias\OutgoingMessageStore;
 use Psr\Container\ContainerInterface;
 use Soa\Clock\ClockImpl;
 use Soa\IdentifierGenerator\UuidIdentifierGenerator;
@@ -39,7 +39,7 @@ class MergePullRequestEventBus implements EventBus
 
     public function handle(DomainEvent $domainEvent): Transition
     {
-        $processManagerName = $this->container->get('config')['process-manager'];
+        $processManagerName = $this->container->get('config')['service-name'];
 
         $pipeline = MiddlewarePipelineFactory::create(
             new PersistProcessMiddleware($this->container->get(Repository::class)),

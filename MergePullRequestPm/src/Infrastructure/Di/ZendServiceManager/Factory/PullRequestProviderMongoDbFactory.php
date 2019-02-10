@@ -14,7 +14,7 @@ class PullRequestProviderMongoDbFactory
     {
         /** @var Client $client */
         $client   = $container->get(Client::class);
-        $database = $client->selectDatabase('pull_request')->withOptions(['typeMap' =>['document' => 'array', 'root' => 'array']]);
+        $database = $client->selectDatabase('code_review')->withOptions(['typeMap' =>['document' => 'array', 'root' => 'array']]);
 
         return new PullRequestProviderMongoDb($database->selectCollection('pull_requests'));
     }
