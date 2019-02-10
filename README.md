@@ -57,7 +57,10 @@ If you want to play around with the code you just need to:
 `docker-compose -f docker/services-docker-compose.yml up`
 
 # Testing the app
-If you want to test how the application behaves you can send the next HTTP requests:
+If you want to test how the application behaves you can:
+- Use [Restlet](https://chrome.google.com/webstore/detail/restlet-client-rest-api-t/aejoelaoggembcahagimdiliamlcdmfm) and import the [config file](https://github.com/soa-php/code-review-app/blob/master/code_review_restlet.json). Then go to the SCENARIOS tab and run the Code Review Scenario.
+
+- Use `curl` from the command line following the next steps:
 
 1) Create a User with `writer` role:
 
