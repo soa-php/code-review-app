@@ -42,7 +42,7 @@ class PaymentCommandBus implements CommandBus
 
     public function handle(Command $command): CommandResponse
     {
-        $boundedContextName = $this->container->get('config')['bounded-context'];
+        $boundedContextName = $this->container->get('config')['service-name'];
 
         $pipeline = MiddlewarePipelineFactory::create(
             new PersistProjectionMiddleware($this->container->get(PaymentProjectionTable::class)),

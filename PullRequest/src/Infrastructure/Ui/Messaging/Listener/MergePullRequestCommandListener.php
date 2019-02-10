@@ -17,7 +17,7 @@ class MergePullRequestCommandListener extends AbstractMessageListener
 {
     public function handle(Message $message): void
     {
-        $command = hydrate(MergePullRequestCommand::class, $message->body());
+        $command = new MergePullRequestCommand($message->body()['aggregateRootId']);
 
         /** @var CommandResponse $result */
         $result = $this->commandBus(PullRequestCommandBus::class, $message)->handle($command);

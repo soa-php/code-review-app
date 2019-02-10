@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Payment\Infrastructure\Ui\Messaging\Listener;
 
+use Common\Ui\Messaging\Listener\AbstractMessageListener;
 use function Martinezdelariva\Functional\match;
 use function Martinezdelariva\Hydrator\hydrate;
 use Payment\Application\PaymentCommandBus;
