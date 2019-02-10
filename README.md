@@ -119,7 +119,9 @@ curl -i -X POST \
 5) Assign a Reviewer:
 
 `{writer_access_token}`: the access token returned in step 1.
+
 `{reviewer_id}`: the UUID returned in the `Location` header in step 2.
+
 `{pull_request_id}`: the UUID returned in the `Location` header in step 4.
 
 `
@@ -136,7 +138,9 @@ curl -i -X PUT \
 6) Assign another Reviewer:
 
 `{writer_access_token}`: the access token returned in step 1.
+
 `{reviewer_id}`: the UUID returned in the `Location` header in step 3.
+
 `{pull_request_id}`: the UUID returned in the `Location` header in step 4.
 
 `
@@ -154,6 +158,7 @@ curl -i -X PUT \
 7) Approve the Pull Request by one Reviewer:
 
 `{reviewer_access_token}`: the access token returned in step 2.
+
 `{pull_request_id}`: the UUID returned in the `Location` header in step 4.
 
 `
@@ -168,6 +173,7 @@ curl -i -X PUT \
 5) Approve the Pull Request by the other Reviwer:
 
 `{reviewer_access_token}`: the access token returned in step 3.
+
 `{pull_request_id}`: the UUID returned in the `Location` header in step 4.
 
 `
