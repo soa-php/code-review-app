@@ -4,7 +4,7 @@
   "license": "MIT",
   "require": {
     "php": "^7.2",
-    "mgonzalezbaile/common": "dev-user-identity-bc",
+    "mgonzalezbaile/common": "dev-master",
     "martinezdelariva/functional": "dev-master",
     "ext-json": "*"
   },

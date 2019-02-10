@@ -43,11 +43,13 @@ class AuthorizationMiddleware implements MiddlewareInterface
                 return $handler->handle($request);
             }
 
-            if (empty($request->getHeaderLine('Authorization'))) {
+            $token = str_replace('Bearer ', '', $request->getHeaderLine('Authorization'));
+
+            if (empty($token)) {
                 return new EmptyResponse(Httpstatuscodes::HTTP_UNAUTHORIZED);
             }
 
-            $token =  $this->tokenParser->parse($request->getHeaderLine('Authorization'));
+            $token =  $this->tokenParser->parse($token);
 
             if (!$this->authorizationService->isUserAuthorizedForRoute($token->roles(), $routeName, $request->getMethod())) {
                 return new EmptyResponse(Httpstatuscodes::HTTP_UNAUTHORIZED);
