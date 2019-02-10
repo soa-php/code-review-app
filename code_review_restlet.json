@@ -1,0 +1,810 @@
+{
+  "front-version": "2.19.1",
+  "version": 3,
+  "nodes": [
+    {
+      "type": "Project",
+      "id": "460cb26c-0eb5-40a2-b333-57ec9ce27515",
+      "lastModified": "2019-02-10T11:52:48.603+01:00",
+      "name": "CodeReview"
+    },
+    {
+      "type": "Service",
+      "id": "b1e84dec-5d0c-4a28-8fd2-d9bc07b8b172",
+      "lastModified": "2018-12-03T17:06:08.782+01:00",
+      "name": "Payment",
+      "parentId": "460cb26c-0eb5-40a2-b333-57ec9ce27515"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "https://tools.ietf.org/html/rfc7231#section-4.3",
+        "name": "POST"
+      },
+      "body": {
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"payer\": \"some payer\",\n\t\"amount\": \"100\",\n\t\"subjectId\": \"a subject id\",\n\t\"currencyCode\": \"EUR\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "path": "localhost:8081/payments/collect"
+      },
+      "id": "1f7d10b2-e34d-4f51-94c1-58422fdceb75",
+      "lastModified": "2018-12-03T17:06:08.783+01:00",
+      "name": "POST /payments/collect",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "http-request-id"
+        }
+      ],
+      "assertions": [],
+      "metaInfo": {
+        "ownerId": null
+      },
+      "parentId": "b1e84dec-5d0c-4a28-8fd2-d9bc07b8b172"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "https://tools.ietf.org/html/rfc7231#section-4.3",
+        "name": "POST"
+      },
+      "body": {
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"payee\": \"some payee\",\n\t\"amount\": \"100\",\n\t\"subjectId\": \"a subject id\",\n\t\"currencyCode\": \"EUR\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "path": "localhost:8081/payments/payout"
+      },
+      "id": "741a7106-7283-4c60-a921-8e773eb1f11a",
+      "lastModified": "2018-12-03T17:06:08.783+01:00",
+      "name": "POST /payments/payout",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "http-request-id"
+        }
+      ],
+      "assertions": [],
+      "metaInfo": {
+        "ownerId": null
+      },
+      "parentId": "b1e84dec-5d0c-4a28-8fd2-d9bc07b8b172"
+    },
+    {
+      "type": "Service",
+      "id": "8514a374-2133-4d13-b27a-37225d434e4c",
+      "lastModified": "2018-12-03T17:06:08.782+01:00",
+      "name": "PullRequest",
+      "parentId": "460cb26c-0eb5-40a2-b333-57ec9ce27515"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "https://tools.ietf.org/html/rfc7231#section-4.3",
+        "name": "POST"
+      },
+      "body": {
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"code\": \"some code\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "path": "localhost:8080/pull-requests"
+      },
+      "id": "18e62b02-9460-4b7d-8cd1-74037d0d2af3",
+      "lastModified": "2019-02-10T11:51:42.812+01:00",
+      "name": "POST /pull-requests",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "http-request-id"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1c2VyX2lkZW50aXR5X2JjIiwianRpIjoiODFmNGY2NjgtYTA5Yi00NDI4LTlkZGQtYmYxODUxZmZlNjQ3IiwiaWF0IjoxNTQ5Nzk1ODIzLCJleHAiOjE1NDk3OTY3MjMsInVzZXItaWQiOiJiYzBlYzA3ZC05MzVkLTRiNTktOWUwMS01ODY1ZDQ0NGE5YWUiLCJyb2xlcyI6WyJ3cml0ZXIiXSwidG9rZW4tdHlwZSI6ImFjY2VzcyJ9.AMrdbZQAutN_dtum5z9ZBByhvWFcuio9J12XopQuW14"
+        }
+      ],
+      "assertions": [],
+      "metaInfo": {},
+      "parentId": "8514a374-2133-4d13-b27a-37225d434e4c"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "https://tools.ietf.org/html/rfc7231#section-4.3",
+        "name": "PUT"
+      },
+      "body": {
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": ""
+      },
+      "headersType": "Form",
+      "uri": {
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "path": "localhost:8080/pull-requests/dfb08d54-135f-45a7-9c08-996e5fa40980/approve"
+      },
+      "id": "1deaa69b-741e-4c6c-acb0-cf3886cd1959",
+      "lastModified": "2019-02-10T11:49:29.776+01:00",
+      "name": "PUT /pull-requests/:id/approve",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "d0e2b3e4-53d0-4010-a486-e1a0cf895bce"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "aaaaa"
+        }
+      ],
+      "assertions": [],
+      "metaInfo": {},
+      "parentId": "8514a374-2133-4d13-b27a-37225d434e4c"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "https://tools.ietf.org/html/rfc7231#section-4.3",
+        "name": "PUT"
+      },
+      "body": {
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"reviewer\": \"a reviewer\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "path": "localhost:8080/pull-requests/72b2f55a-e4d9-4ee0-bf28-64a28a7147d3/reviewer"
+      },
+      "id": "b5d32adf-bcb0-47a6-b489-2aad872866b6",
+      "lastModified": "2019-02-03T11:55:55.211+01:00",
+      "name": "PUT /pull-requests/:id/reviewer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "d0e2b3e4-53d0-4010-a486-e1a0cf895bce"
+        }
+      ],
+      "assertions": [],
+      "metaInfo": {},
+      "parentId": "8514a374-2133-4d13-b27a-37225d434e4c"
+    },
+    {
+      "type": "Service",
+      "id": "2d874fb1-a946-42d3-ae51-2ec4633a4dda",
+      "lastModified": "2019-01-27T20:01:47.727+01:00",
+      "name": "UserIdentity",
+      "parentId": "460cb26c-0eb5-40a2-b333-57ec9ce27515"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"email\": \"writer@email.com\",\n  \"password\": \"some password\",\n  \"username\": \"writer\",\n  \"roles\": [\"writer\"]\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8081",
+        "path": "/users/login/password"
+      },
+      "id": "dfa871e0-1929-45bb-b81c-082662e15a1b",
+      "lastModified": "2019-02-10T11:50:44.514+01:00",
+      "name": "POST /users/password",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "http-request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "2d874fb1-a946-42d3-ae51-2ec4633a4dda"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8081",
+        "path": "/users/398a2156-8c61-42b4-b63c-c23b1abef218/access-token"
+      },
+      "id": "9c6f8345-f062-403c-b56e-18b11be42e6d",
+      "lastModified": "2019-02-02T10:59:06.198+01:00",
+      "name": "PUT /users/{id}/access-token",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ1c2VyX2lkZW50aXR5X2JjIiwianRpIjoiNDljMjJjMGItMGJlMS00Yzc3LTllZjEtMGEzNjY1YmE2NjBmIiwiaWF0IjoxNTQ5MDY1ODA1LCJleHAiOjE1NDkxNTIyMDUsInVzZXJfaWQiOiIzOThhMjE1Ni04YzYxLTQyYjQtYjYzYy1jMjNiMWFiZWYyMTgiLCJyb2xlcyI6WyJ3cml0ZXIiLCJyZXZpZXdlciJdfQ.CIWhCkRNck8fPaa-qvYca6uEUVZf_psXCLPQxE7hgAY"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "http-request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "2d874fb1-a946-42d3-ae51-2ec4633a4dda"
+    },
+    {
+      "type": "Scenario",
+      "id": "803ebc2d-34b7-4a50-94c3-6083de855037",
+      "lastModified": "2019-02-10T11:49:43.635+01:00",
+      "name": "Code Review Scenario",
+      "requestOrder": [
+        "Log New Writer",
+        "Log New Reviewer",
+        "Log Another New Reviewer",
+        "Refresh Writer Access Token",
+        "Create PR",
+        "Assign Reviewer",
+        "Assign Another Reviewer",
+        "Approver Approves",
+        "Another Approver Approves"
+      ],
+      "parentId": "460cb26c-0eb5-40a2-b333-57ec9ce27515"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"email\": \"maikel@gmail.com\",\n  \"password\": \"some password\",\n  \"username\": \"mgonzalez\",\n  \"roles\": [\"writer\"]\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "secure": true,
+          "name": "https",
+          "version": "V11"
+        },
+        "host": "${\"CodeReview\".\"UserIdentity\".\"POST /users/password\".\"request\".\"uri\"}",
+        "path": ""
+      },
+      "id": "1a9c03cc-6a1f-49d5-a3a8-f19dcf673f40",
+      "lastModified": "2019-02-02T11:20:08.994+01:00",
+      "name": "Log New Writer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "some-request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"email\": \"reviewer@gmail.com\",\n  \"password\": \"some other password\",\n  \"username\": \"reviewer\",\n  \"roles\": [\"reviewer\", \"writer\"]\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "secure": true,
+          "name": "https",
+          "version": "V11"
+        },
+        "host": "${\"CodeReview\".\"UserIdentity\".\"POST /users/password\".\"request\".\"uri\"}",
+        "path": ""
+      },
+      "id": "9b75a041-4125-4b54-92eb-0905085493be",
+      "lastModified": "2019-02-02T11:20:24.959+01:00",
+      "name": "Log New Reviewer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "some-request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n  \"email\": \"another_reviewer@gmail.com\",\n  \"password\": \"some password\",\n  \"username\": \"another_reviewer\",\n  \"roles\": [\"reviewer\"]\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "secure": true,
+          "name": "https",
+          "version": "V11"
+        },
+        "host": "${\"CodeReview\".\"UserIdentity\".\"POST /users/password\".\"request\".\"uri\"}",
+        "path": ""
+      },
+      "id": "bafe3c20-33d8-462e-92ea-f079e5402099",
+      "lastModified": "2019-02-02T11:20:34.715+01:00",
+      "name": "Log Another New Reviewer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "some-request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8081",
+        "path": "/users/${\"CodeReview\".\"Code Review Scenario\".\"Log New Writer\".\"response\".\"headers\".\"location\"}/access-token"
+      },
+      "id": "6b6b4505-b2a9-4f30-be60-5607f1a1c989",
+      "lastModified": "2019-02-10T11:49:43.649+01:00",
+      "name": "Refresh Writer Access Token",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log New Writer\".\"response\".\"body\".\"refresh-token\"}"
+        },
+        {
+          "enabled": true,
+          "name": "Id",
+          "value": "request-id"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+        "name": "POST"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "${\"CodeReview\".\"PullRequest\".\"POST /pull-requests\".\"request\".\"body\"}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "secure": true,
+          "name": "https",
+          "version": "V11"
+        },
+        "host": "${\"CodeReview\".\"PullRequest\".\"POST /pull-requests\".\"request\".\"uri\"}",
+        "path": ""
+      },
+      "id": "56fa3cf2-503f-43b7-b7b6-e9478217ecd5",
+      "lastModified": "2019-02-10T11:49:43.649+01:00",
+      "name": "Create PR",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "id",
+          "value": "${uuid()}"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log New Writer\".\"response\".\"body\".\"access-token\"}"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"reviewer\": \"${\"CodeReview\".\"Code Review Scenario\".\"Log New Reviewer\".\"response\".\"headers\".\"location\"}\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/pull-requests/${\"CodeReview\".\"Code Review Scenario\".\"Create PR\".\"response\".\"headers\".\"location\"}/reviewer"
+      },
+      "id": "8d781589-b1d6-4cd2-9a49-49fd3c897b74",
+      "lastModified": "2019-02-10T11:49:43.649+01:00",
+      "name": "Assign Reviewer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "id",
+          "value": "${uuid()}"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log New Writer\".\"response\".\"body\".\"access-token\"}"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": "{\n\t\"reviewer\": \"${\"CodeReview\".\"Code Review Scenario\".\"Log Another New Reviewer\".\"response\".\"headers\".\"location\"}\"\n}"
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/pull-requests/${\"CodeReview\".\"Code Review Scenario\".\"Create PR\".\"response\".\"headers\".\"location\"}/reviewer"
+      },
+      "id": "1547e42c-f540-47cc-82c6-730b2c1ba771",
+      "lastModified": "2019-02-10T11:49:43.649+01:00",
+      "name": "Assign Another Reviewer",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "id",
+          "value": "${uuid()}"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log New Writer\".\"response\".\"body\".\"access-token\"}"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": ""
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/pull-requests/${\"CodeReview\".\"Code Review Scenario\".\"Create PR\".\"response\".\"headers\".\"location\"}/approve"
+      },
+      "id": "c23639b0-4789-49f7-97a6-68e68b02f4e8",
+      "lastModified": "2019-02-10T11:49:43.650+01:00",
+      "name": "Approver Approves",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "id",
+          "value": "${uuid()}"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log New Reviewer\".\"response\".\"body\".\"access-token\"}"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    },
+    {
+      "type": "Request",
+      "method": {
+        "requestBody": true,
+        "link": "http://tools.ietf.org/html/rfc7231#section-4.3.4",
+        "name": "PUT"
+      },
+      "body": {
+        "formBody": {
+          "overrideContentType": true,
+          "encoding": "application/x-www-form-urlencoded",
+          "items": []
+        },
+        "bodyType": "Text",
+        "autoSetLength": true,
+        "textBody": ""
+      },
+      "headersType": "Form",
+      "uri": {
+        "query": {
+          "delimiter": "&",
+          "items": []
+        },
+        "scheme": {
+          "name": "http",
+          "version": "V11"
+        },
+        "host": "localhost:8080",
+        "path": "/pull-requests/${\"CodeReview\".\"Code Review Scenario\".\"Create PR\".\"response\".\"headers\".\"location\"}/approve"
+      },
+      "id": "4811be0b-1bfc-4029-ae8f-7d0e4e4b1867",
+      "lastModified": "2019-02-10T11:52:48.603+01:00",
+      "name": "Another Approver Approves",
+      "headers": [
+        {
+          "enabled": true,
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "enabled": true,
+          "name": "id",
+          "value": "${uuid()}"
+        },
+        {
+          "enabled": true,
+          "name": "Authorization",
+          "value": "${\"CodeReview\".\"Code Review Scenario\".\"Log Another New Reviewer\".\"response\".\"body\".\"access-token\"}"
+        }
+      ],
+      "metaInfo": {},
+      "parentId": "803ebc2d-34b7-4a50-94c3-6083de855037"
+    }
+  ]
+}
