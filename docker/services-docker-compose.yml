@@ -3,6 +3,7 @@ services:
 #SERVERS
   pull_request_server:
     image: mgonzalezbaile/php_base:1.0
+    container_name: pull_request_server
     volumes:
     - ..:/srv/app
     working_dir: /srv/app/PullRequest
@@ -14,6 +15,7 @@ services:
 
   user_identity_server:
     image: mgonzalezbaile/php_base:1.0
+    container_name: user_identity_server
     volumes:
     - ..:/srv/app
     working_dir: /srv/app/UserIdentity
@@ -51,6 +53,7 @@ services:
     networks:
     - common
 
+# Publisher
   message_publisher:
     image: mgonzalezbaile/php_base:1.0
     volumes:
