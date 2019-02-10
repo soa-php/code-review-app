@@ -12,7 +12,12 @@ This repo contains the code examples explained in the post series:
 7. To be continued...
 
 # Context
-There are 4 bounded contexts:
+There are 3 bounded contexts:
+
+## User Identity
+### Use Cases
+- Log User In With Password
+- Refresh User Access Token
 
 ## Pull Request
 ### Use Cases
@@ -54,69 +59,125 @@ If you want to play around with the code you just need to:
 # Testing the app
 If you want to test how the application behaves you can send the next HTTP requests:
 
-1) Create a Pull Request:
+1) Create a User with `writer` role:
 
 `
-curl -i -X POST 
-   -H "id:e0ff1d6d-9035-4974-b711-b9805116abad"
-   -d 
-'{"writer":"aaaa", "code":"some code"}' 
- 'http://localhost:8080/pull-requests'
-`
-
-NOTE: Copy the UUID generated from the `Location` header returned in the Response and replace the `{id}` placeholder from the next CURL calls with the UUID.
-
-2) Assign a Reviewer:
-
-`
-curl -i -X PUT 
-   -H "Content-Type:application/json" 
-   -H "id:eb59b73b-a0d7-4cc8-9d9e-118b11a5f30c" 
-   -d 
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -H "Id:http-request-id" \
+   -d \
 '{
-	"reviewer": "a reviewer"
-}' 
- 'http://localhost:8080/pull-requests/{id}/reviewer'
- `
+  "email": "writer@email.com",
+  "password": "some password",
+  "username": "writer",
+  "roles": ["writer"]
+}' \
+ 'http://localhost:8081/users/login/password'`
  
-3) Assign another Reviewer:
+2) Create a User with `reviewer` role:
 
 `
-curl -i -X PUT 
-   -H "Content-Type:application/json" 
-   -H "id:07d6a393-eb2a-4d00-8351-0e691865fe82" 
-   -d 
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -H "Id:http-request-id" \
+   -d \
 '{
-	"reviewer": "another reviewer"
-}' 
- 'http://localhost:8080/pull-requests/{id}/reviewer'
-` 
+  "email": "reviewer@email.com",
+  "password": "some other password",
+  "username": "reviewer",
+  "roles": ["reviewer", "writer"]
+}' \
+ 'http://localhost:8081/users/login/password'
+`
 
-4) Approve the Pull Request by one Reviewer:
+3) Create another User with `reviewer` role:
 
 `
-curl -i -X PUT 
-   -H "Content-Type:application/json" 
-   -H "id:cc8ea97a-8c90-4023-aeb2-f4387c79bee9" 
-   -d 
+curl -i -X POST \
+   -H "Content-Type:application/json" \
+   -H "Id:http-request-id" \
+   -d \
 '{
-	"approver": "a reviewer"
-}' 
- 'http://localhost:8080/pull-requests/{id}/approve'
+  "email": "another_reviewer@email.com",
+  "password": "some password",
+  "username": "another_reviewer",
+  "roles": ["reviewer"]
+}' \
+ 'http://localhost:8081/users/login/password'
 `
+
+4) Create a Pull Request replacing the `writer_access_token` placeholder with the access token returned when you created the writer in step 1:
+
+`
+curl -i -X POST \
+   -H "id:ddc42abd-f1b8-4078-8238-a265282bfbfa" \
+   -H "Authorization:{writer_access_token}" \
+   -d \
+'{"code":"some code"}' \
+ 'http://localhost:8080/pull-requests'`
+
+5) Assign a Reviewer:
+
+`{writer_access_token}`: the access token returned in step 1.
+`{reviewer_id}`: the UUID returned in the `Location` header in step 2.
+`{pull_request_id}`: the UUID returned in the `Location` header in step 4.
+
+`
+curl -i -X PUT \
+   -H "Content-Type:application/json" \
+   -H "id:79d4ee69-6e2f-4e6d-b338-9c68ecb88468" \
+   -H "Authorization:{writer_access_token}" \
+   -d \
+'{
+	"reviewer": "{reviewer_id}"
+}' \
+ 'http://localhost:8080/pull-requests/{pull_request_id}/reviewer' `
+ 
+6) Assign another Reviewer:
+
+`{writer_access_token}`: the access token returned in step 1.
+`{reviewer_id}`: the UUID returned in the `Location` header in step 3.
+`{pull_request_id}`: the UUID returned in the `Location` header in step 4.
+
+`
+curl -i -X PUT \
+   -H "Content-Type:application/json" \
+   -H "id:79d4ee69-6e2f-4e6d-b338-9c68ecb88468" \
+   -H "Authorization:{writer_access_token}" \
+   -d \
+'{
+	"reviewer": "{reviewer_id}"
+}' \
+ 'http://localhost:8080/pull-requests/{pull_request_id}/reviewer' `
+ 
+
+7) Approve the Pull Request by one Reviewer:
+
+`{reviewer_access_token}`: the access token returned in step 2.
+`{pull_request_id}`: the UUID returned in the `Location` header in step 4.
+
+`
+curl -i -X PUT \
+   -H "Content-Type:application/json" \
+   -H "Id:d0e2b3e4-53d0-4010-a486-e1a0cf895bce" \
+   -H "Authorization:{reviewer_access_token}" \
+   -d \
+'' \
+ 'http://localhost:8080/pull-requests/{pull_request_id}/approve'`
 
 5) Approve the Pull Request by the other Reviwer:
 
+`{reviewer_access_token}`: the access token returned in step 3.
+`{pull_request_id}`: the UUID returned in the `Location` header in step 4.
+
 `
-curl -i -X PUT 
-   -H "Content-Type:application/json" 
-   -H "id:78ffb2f0-7598-4c9d-abd0-0f06bad29cc2" 
-   -d 
-'{
-	"approver": "another reviewer"
-}' 
- 'http://localhost:8080/pull-requests/{id}/approve'
-`
+curl -i -X PUT \
+   -H "Content-Type:application/json" \
+   -H "Id:d0e2b3e4-53d0-4010-a486-e1a0cf895bce" \
+   -H "Authorization:{reviewer_access_token}" \
+   -d \
+'' \
+ 'http://localhost:8080/pull-requests/{pull_request_id}/approve'`
 
 6) At this point, since all reviewers have approved the Pull Request, the Process Manager starts managing the process to charge and pay the money, and then merge the Pull Request.
 
