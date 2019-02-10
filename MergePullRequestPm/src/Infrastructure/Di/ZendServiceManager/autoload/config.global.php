@@ -83,7 +83,7 @@ return [
         ],
     ],
     'service-name'          => 'merge_pull_request_pm',
-    'mongo-db'            => [
+    'mongo-db'              => [
         'connection' => 'mongodb://mongo:27017',
         'database'   => 'code_review',
     ],
