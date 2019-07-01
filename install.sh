@@ -12,4 +12,10 @@ cd ../PullRequest
 cd ../Common
 ./run.sh composer install
 
+cd ../UserIdentity
+./run.sh composer install
+
+cd ../MessagePublisher
+./run.sh composer install
+
 docker network inspect common &>/dev/null || docker network create common
